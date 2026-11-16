@@ -102,6 +102,8 @@ function mergeResearch(research, translation) {
             feedbackEn: activity.feedback,
             rationale: zh.learn.activities[index]?.rationale ?? activity.rationale,
             rationaleEn: activity.rationale,
+            sourceClaims: zh.learn.activities[index]?.sourceClaims ?? activity.sourceClaims,
+            sourceClaimsEn: activity.sourceClaims,
           })),
           constraints: zh.learn.constraints ?? record.learn.constraints,
           constraintsEn: record.learn.constraints,

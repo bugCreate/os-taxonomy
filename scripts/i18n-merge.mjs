@@ -150,19 +150,19 @@ export function buildLocalePack({ locale, plan, topics, clusters, dependencies, 
   }
 
   const pack = {
-    topics: {
+    'topics.json': {
       locale,
       version: topics.version,
       topicCount: translatedTopics.length,
       topics: translatedTopics,
     },
-    clusters: {
+    'clusters.json': {
       locale,
       version: clusters.version,
       clusterCount: translatedClusters.length,
       clusters: translatedClusters,
     },
-    dependencies: {
+    'dependencies.json': {
       locale,
       version: dependencies.version,
       edgeCount: translatedDependencies.length,
@@ -176,20 +176,20 @@ export function buildLocalePack({ locale, plan, topics, clusters, dependencies, 
       notes: notes?.notes ?? [],
       records: translatedResearch,
     },
-    labels,
-    notes,
+    'labels.json': labels,
+    'notes.json': notes,
   };
   // Chinese typography is normalised once, here, so every locale pack is
   // identical whatever the individual translators produced.
-  for (const name of ['topics', 'clusters', 'dependencies', 'teaching-research.json']) {
-    pack[name] = normalizeQuotesDeep(pack[name]);
+  for (const name of LOCALE_FILES) {
+    if (pack[name] !== undefined) pack[name] = normalizeQuotesDeep(pack[name]);
   }
   return { pack, problems };
 }
 
 /** Write the locale pack and refresh both manifests. */
-export function writeLocalePack(locale, pack, { manifest, generatedAt }) {
-  const directory = resolve(DATA, 'i18n', locale);
+export function writeLocalePack(locale, pack, { manifest, generatedAt, dataDirectory = DATA }) {
+  const directory = resolve(dataDirectory, 'i18n', locale);
   mkdirSync(directory, { recursive: true });
   const files = {};
   for (const name of LOCALE_FILES) {
@@ -202,13 +202,13 @@ export function writeLocalePack(locale, pack, { manifest, generatedAt }) {
     locale,
     language: locale === 'zh-Hans' ? '简体中文' : locale,
     direction: 'ltr',
-    version: pack.topics.version,
+    version: pack['topics.json'].version,
     sourceTaxonomyVersion: manifest.taxonomyVersion,
     generatedAt,
     counts: {
-      topics: pack.topics.topicCount,
-      clusters: pack.clusters.clusterCount,
-      dependencies: pack.dependencies.edgeCount,
+      topics: pack['topics.json'].topicCount,
+      clusters: pack['clusters.json'].clusterCount,
+      dependencies: pack['dependencies.json'].edgeCount,
       teachingResearch: pack['teaching-research.json'].recordCount,
     },
     files,
@@ -235,25 +235,32 @@ export function writeLocalePack(locale, pack, { manifest, generatedAt }) {
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const locale = process.argv[2] ?? 'zh-Hans';
-  const plan = load('work/i18n/plan.json');
-  const manifest = load('data/manifest.json');
-  const labelsPath = `data/i18n/${locale}/labels.json`;
-  if (!existsSync(resolve(ROOT, labelsPath))) {
+  const options = { locale: 'zh-Hans', plan: 'work/i18n/plan.json', data: 'data', root: ROOT };
+  const rest = process.argv.slice(2);
+  for (let index = 0; index < rest.length; index++) {
+    const flag = rest[index];
+    if (flag === '--plan') options.plan = rest[++index];
+    else if (flag === '--data') options.data = rest[++index];
+    else if (!flag.startsWith('--')) options.locale = flag;
+  }
+  const root = resolve(options.root, options.data);
+  const plan = JSON.parse(readFileSync(resolve(options.root, options.plan), 'utf8'));
+  const manifest = JSON.parse(readFileSync(resolve(root, 'manifest.json'), 'utf8'));
+  const labelsPath = resolve(root, 'i18n', options.locale, 'labels.json');
+  if (!existsSync(labelsPath)) {
     console.error(`missing ${labelsPath}`);
     process.exit(1);
   }
+  const notesPath = resolve(root, 'i18n', options.locale, 'notes.json');
   const { pack, problems } = buildLocalePack({
-    locale,
+    locale: options.locale,
     plan,
-    topics: load('data/topics.json'),
-    clusters: load('data/clusters.json'),
-    dependencies: load('data/dependencies.json'),
-    research: load('data/teaching-research.json'),
-    labels: load(labelsPath),
-    notes: existsSync(resolve(ROOT, `data/i18n/${locale}/notes.json`))
-      ? load(`data/i18n/${locale}/notes.json`)
-      : null,
+    topics: JSON.parse(readFileSync(resolve(root, 'topics.json'), 'utf8')),
+    clusters: JSON.parse(readFileSync(resolve(root, 'clusters.json'), 'utf8')),
+    dependencies: JSON.parse(readFileSync(resolve(root, 'dependencies.json'), 'utf8')),
+    research: JSON.parse(readFileSync(resolve(root, 'teaching-research.json'), 'utf8')),
+    labels: JSON.parse(readFileSync(labelsPath, 'utf8')),
+    notes: existsSync(notesPath) ? JSON.parse(readFileSync(notesPath, 'utf8')) : null,
   });
   if (problems.length) {
     console.error(`✗ ${problems.length} merge problem(s):`);
@@ -262,13 +269,17 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     process.exit(1);
   }
   const generatedAt = new Date().toISOString();
-  const { manifest: nextManifest } = writeLocalePack(locale, pack, { manifest, generatedAt });
-  writeFileSync(resolve(DATA, 'manifest.json'), json(nextManifest));
+  const { manifest: nextManifest } = writeLocalePack(options.locale, pack, {
+    manifest,
+    generatedAt,
+    dataDirectory: root,
+  });
+  writeFileSync(resolve(root, 'manifest.json'), json(nextManifest));
   console.log(JSON.stringify({
-    locale,
-    topics: pack.topics.topicCount,
-    clusters: pack.clusters.clusterCount,
-    dependencies: pack.dependencies.edgeCount,
+    locale: options.locale,
+    topics: pack['topics.json'].topicCount,
+    clusters: pack['clusters.json'].clusterCount,
+    dependencies: pack['dependencies.json'].edgeCount,
     teachingResearch: pack['teaching-research.json'].recordCount,
     generatedAt,
   }, null, 2));
