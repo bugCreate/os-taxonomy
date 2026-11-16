@@ -28,21 +28,34 @@ function codeTokensStrict(text) {
     const token = match[0];
     if (ORDINAL.test(token)) continue;
     if ((token.match(/[A-Za-z]/g) ?? []).length < 2) continue;
+    // A curriculum code carries an upper-case run (4-PS4-1, AC9TDE2P04, KS1);
+    // a lower-case hyphenated phrase (5-minute, 3000-year) is prose.
+    if (!/[A-Z]/.test(token)) continue;
     tokens.add(token);
   }
   return [...tokens];
 }
 
-/** Chinese copy should be Chinese: a long ASCII word run usually means an
- *  untranslated English sentence slipped through. */
+/** Chinese copy should be Chinese. Quoted English is normal — English-language
+ *  topics quote English examples on purpose — so the check looks at the text
+ *  *outside* quotations: an untranslated sentence leaves a long run of
+ *  English words there, while a Chinese sentence with English examples does
+ *  not. */
 function looksUntranslated(chinese) {
   if (typeof chinese !== 'string' || chinese.length < 60) return false;
-  const cjk = (chinese.match(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/g) ?? []).length;
-  const latin = (chinese.match(/[A-Za-z]/g) ?? []).length;
-  return latin > cjk;
+  // Quoted and parenthesised English is expected in the English-language
+  // topics, which list the words they are about.
+  const outside = chinese
+    .replace(/[“"「][^”"」]*[”"」]/g, ' ')
+    .replace(/（[^）]*）/g, ' ')
+    .replace(/\([^)]*\)/g, ' ');
+  const cjk = (outside.match(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/g) ?? []).length;
+  const latin = (outside.match(/[A-Za-z]/g) ?? []).length;
+  if (latin < 40) return false;
+  return latin > cjk * 3;
 }
 
-function checkTextPair(errors, label, english, chinese, { allowNull = false, identifier = false } = {}) {
+function checkTextPair(errors, label, english, chinese, { allowNull = false, identifier = false, allowEnglish = false } = {}) {
   if (identifier) {
     // Identifiers and enums are reproduced, never translated.
     if (english !== chinese) errors.push(`${label}: identifier changed`);
@@ -87,19 +100,23 @@ function checkTextPair(errors, label, english, chinese, { allowNull = false, ide
   if (english.length >= 20 && (chinese.length < english.length * 0.12 || chinese.length > english.length * 4)) {
     errors.push(`${label}: translation length ${chinese.length} is out of range for ${english.length} characters`);
   }
-  if (looksUntranslated(chinese)) {
+  if (!allowEnglish && looksUntranslated(chinese)) {
     errors.push(`${label}: translation still reads as English`);
   }
 }
 
 /** Compare two trees of the same shape, field by field. */
-function checkTree(errors, label, source, translation) {
+function checkTree(errors, label, source, translation, options = {}) {
   for (const pair of textPairs(source, translation, label)) {
     if (pair.shapeError) {
       errors.push(`${pair.path}: structure differs from the English source`);
       continue;
     }
-    checkTextPair(errors, pair.path, pair.english, pair.chinese, { allowNull: pair.english === null, identifier: pair.identifier });
+    checkTextPair(errors, pair.path, pair.english, pair.chinese, {
+      allowNull: pair.english === null,
+      identifier: pair.identifier,
+      allowEnglish: options.allowEnglish === true,
+    });
   }
 }
 
@@ -108,6 +125,10 @@ export function checkLocalePack(locale, pack, context) {
   const { topics, clusters, dependencies, research, labels } = context;
   const errors = [];
   const check = (condition, message) => { if (!condition) errors.push(message); };
+  // In these subjects the English wording is the subject matter: an English
+  // example inside a Chinese sentence is correct, not an untranslated string.
+  const ENGLISH_SUBJECTS = new Set(['English', 'Français']);
+  const subjectByTopic = new Map(topics.topics.map(topic => [topic.id, topic.subject]));
 
   // --- topics ----------------------------------------------------------------
   const topicRows = pack?.topics?.topics;
@@ -127,16 +148,17 @@ export function checkLocalePack(locale, pack, context) {
         errors.push(`topics: translation for unknown topic ${row.id}`);
         continue;
       }
-      checkTextPair(errors, `topics ${row.id}.name`, source.name, row.name);
-      checkTextPair(errors, `topics ${row.id}.description`, source.description, row.description);
-      checkTextPair(errors, `topics ${row.id}.assessmentPrompt`, source.assessmentPrompt, row.assessmentPrompt);
+      const allowEnglish = ENGLISH_SUBJECTS.has(source.subject);
+      checkTextPair(errors, `topics ${row.id}.name`, source.name, row.name, { allowEnglish });
+      checkTextPair(errors, `topics ${row.id}.description`, source.description, row.description, { allowEnglish });
+      checkTextPair(errors, `topics ${row.id}.assessmentPrompt`, source.assessmentPrompt, row.assessmentPrompt, { allowEnglish });
       if (!Array.isArray(row.evidence)) {
         errors.push(`topics ${row.id}: evidence is not an array`);
       } else if (row.evidence.length !== source.evidence.length) {
         errors.push(`topics ${row.id}: evidence has ${row.evidence.length} rows, source has ${source.evidence.length}`);
       } else {
         source.evidence.forEach((item, index) => {
-          checkTextPair(errors, `topics ${row.id}.evidence[${index}]`, item, row.evidence[index]);
+          checkTextPair(errors, `topics ${row.id}.evidence[${index}]`, item, row.evidence[index], { allowEnglish });
         });
       }
     }
@@ -162,7 +184,9 @@ export function checkLocalePack(locale, pack, context) {
         errors.push(`clusters: translation for unknown cluster ${key}`);
         continue;
       }
-      checkTextPair(errors, `clusters ${key}.summary`, source.summary, row.summary);
+      checkTextPair(errors, `clusters ${key}.summary`, source.summary, row.summary, {
+        allowEnglish: ENGLISH_SUBJECTS.has(source.subject),
+      });
     }
     for (const source of clusters.clusters) {
       if (!seen.has(clusterKey(source))) errors.push(`clusters: missing translation for ${clusterKey(source)}`);
@@ -186,7 +210,9 @@ export function checkLocalePack(locale, pack, context) {
         errors.push(`dependencies: translation for unknown edge ${key}`);
         continue;
       }
-      checkTextPair(errors, `dependencies ${key}.reason`, source.reason, row.reason);
+      checkTextPair(errors, `dependencies ${key}.reason`, source.reason, row.reason, {
+        allowEnglish: ENGLISH_SUBJECTS.has(subjectByTopic.get(source.topicId)),
+      });
     }
     for (const source of dependencies.dependencies) {
       if (!seen.has(dependencyKey(source))) errors.push(`dependencies: missing translation for ${dependencyKey(source)}`);
@@ -198,6 +224,19 @@ export function checkLocalePack(locale, pack, context) {
   if (!Array.isArray(researchRows)) {
     errors.push(`${locale}: teaching research translation missing`);
   } else {
+    const coverage = pack['teaching-research.json'].coverage ?? {};
+    check(researchRows.length === (pack['teaching-research.json'].recordCount ?? -1), 'research: recordCount does not match the translated rows');
+    // A locale pack may hold an explicitly incomplete research layer, the
+    // same way the English research export does. The gap must be declared
+    // exactly, so a pack can never look complete when it is not.
+    const translated = new Set(researchRows.map(row => row.topicId));
+    const expectedPending = research.records.map(record => record.topicId).filter(topicId => !translated.has(topicId));
+    check(coverage.topicCount === research.records.length, 'research: coverage topicCount does not match the English inventory');
+    check(coverage.withTranslation === researchRows.length, 'research: coverage withTranslation does not match the translated rows');
+    check(
+      JSON.stringify(coverage.pendingTopicIds ?? []) === JSON.stringify(expectedPending),
+      'research: coverage pendingTopicIds does not match the untranslated records',
+    );
     const seen = new Set();
     const sourceById = new Map(research.records.map(record => [record.topicId, record]));
     for (const row of researchRows) {
@@ -213,12 +252,13 @@ export function checkLocalePack(locale, pack, context) {
       // are compared one by one.
       const sourceText = projectResearchText(source);
       const translatedText = projectResearchText(row);
-      checkTree(errors, `research ${row.topicId}.pedagogy`, sourceText.pedagogy, translatedText.pedagogy);
-      checkTree(errors, `research ${row.topicId}.learn`, sourceText.learn, translatedText.learn);
+      const allowEnglish = ENGLISH_SUBJECTS.has(subjectByTopic.get(source.topicId));
+      checkTree(errors, `research ${row.topicId}.pedagogy`, sourceText.pedagogy, translatedText.pedagogy, { allowEnglish });
+      checkTree(errors, `research ${row.topicId}.learn`, sourceText.learn, translatedText.learn, { allowEnglish });
       if (source.assess === null) {
         if (row.assess !== null) errors.push(`research ${row.topicId}.assess: source has no assessment`);
       } else {
-        checkTree(errors, `research ${row.topicId}.assess`, sourceText.assess, translatedText.assess);
+        checkTree(errors, `research ${row.topicId}.assess`, sourceText.assess, translatedText.assess, { allowEnglish });
         check(row.assess.method === source.assess.method, `research ${row.topicId}: assessment method changed`);
         source.assess.errorPatterns.forEach((pattern, index) => {
           const translated = row.assess.errorPatterns?.[index];
@@ -236,8 +276,12 @@ export function checkLocalePack(locale, pack, context) {
       });
       check(row.confidence === source.confidence, `research ${row.topicId}: confidence changed`);
     }
+    // A record may be absent only when the pack declares it as pending.
+    const pending = new Set(coverage.pendingTopicIds ?? []);
     for (const source of research.records) {
-      if (!seen.has(source.topicId)) errors.push(`research: missing translation for ${source.topicId}`);
+      if (!seen.has(source.topicId) && !pending.has(source.topicId)) {
+        errors.push(`research: missing translation for ${source.topicId}`);
+      }
     }
   }
 
@@ -295,6 +339,7 @@ export function checkLocaleManifest(locale, { localeManifest, manifest, files })
   check(counts?.clusters === localeManifest.counts?.clusters, 'dataset manifest: locale cluster count mismatch');
   check(counts?.dependencies === localeManifest.counts?.dependencies, 'dataset manifest: locale dependency count mismatch');
   check(counts?.teachingResearch === localeManifest.counts?.teachingResearch, 'dataset manifest: locale research count mismatch');
+  check(counts?.teachingResearchPending === localeManifest.counts?.teachingResearchPending, 'dataset manifest: locale pending research count mismatch');
   return errors;
 }
 

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
@@ -18,6 +18,8 @@ test('validator rejects orphaned subject/domain pairs without requiring an exact
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
     const topics = JSON.parse(readFileSync(join(fixture, 'data', 'topics.json'), 'utf8')).topics;
     const science = topics.find(t => t.subject === 'Science');
+    const localePath = join(fixture, 'data', 'i18n', 'zh-Hans', 'clusters.json');
+    const originalLocale = existsSync(localePath) ? JSON.parse(readFileSync(localePath, 'utf8')) : null;
     const cases = [
       { subject: 'Science', domain: 'Earth & Human Activity', valid: false },
       { subject: 'Science', domain: 'Heredity & Evolution', valid: false },
@@ -36,6 +38,34 @@ test('validator rejects orphaned subject/domain pairs without requiring an exact
         sha256: createHash('sha256').update(bytes).digest('hex'),
       };
       writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      // The locale pack follows the English data, so the new cluster needs a
+      // translated row too; otherwise the i18n check would fail the fixture
+      // for a different reason than the one under test.
+      if (originalLocale) {
+        // Each case starts from the pristine pack, exactly as the English
+        // clusters file does.
+        const locale = structuredClone(originalLocale);
+        locale.clusters.push({ subject, domain, ageRangeStart: 99, summary: '完整性回归测试。' });
+        locale.clusterCount = locale.clusters.length;
+        const localeBytes = `${JSON.stringify(locale, null, 2)}\n`;
+        writeFileSync(localePath, localeBytes);
+        const localeManifestPath = join(fixture, 'data', 'i18n', 'zh-Hans', 'manifest.json');
+        const localeManifest = JSON.parse(readFileSync(localeManifestPath, 'utf8'));
+        localeManifest.files['clusters.json'] = {
+          bytes: Buffer.byteLength(localeBytes),
+          sha256: createHash('sha256').update(localeBytes).digest('hex'),
+        };
+        localeManifest.counts.clusters = locale.clusterCount;
+        const localeManifestBytes = `${JSON.stringify(localeManifest, null, 2)}\n`;
+        writeFileSync(localeManifestPath, localeManifestBytes);
+        manifest.files['i18n/zh-Hans/clusters.json'] = localeManifest.files['clusters.json'];
+        manifest.files['i18n/zh-Hans/manifest.json'] = {
+          bytes: Buffer.byteLength(localeManifestBytes),
+          sha256: createHash('sha256').update(localeManifestBytes).digest('hex'),
+        };
+        manifest.i18n['zh-Hans'].counts.clusters = locale.clusterCount;
+        writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+      }
       const result = spawnSync(process.execPath, [join(fixture, 'scripts', 'validate.mjs')], { encoding: 'utf8' });
       assert.ifError(result.error);
       if (valid) {

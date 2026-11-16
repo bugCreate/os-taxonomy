@@ -128,15 +128,17 @@ export function buildLocalePack({ locale, plan, topics, clusters, dependencies, 
 
   const researchSource = research.records.map(projectResearchText);
   const researchRows = collectKind(plan, 'research');
-  problems.push(...researchRows.missing.map(id => `missing research shard: ${id}`));
+  // A missing research shard is not an error: those records are untranslated
+  // and the pack declares them as pending. The other layers must be whole.
   const researchTranslations = new Map();
   for (const row of researchRows.rows) {
     if (researchTranslations.has(row.topicId)) problems.push(`duplicate research translation: ${row.topicId}`);
     researchTranslations.set(row.topicId, row);
   }
-  for (const source of researchSource) {
-    if (!researchTranslations.has(source.topicId)) problems.push(`untranslated research record: ${source.topicId}`);
-  }
+  // A research record without a translation is not an error: the pack
+  // declares the gap in its coverage block, exactly as the English research
+  // export declares its own missing topics.
+  const pendingResearch = researchSource.filter(source => !researchTranslations.has(source.topicId)).map(source => source.topicId);
   const translatedResearch = [];
   for (const source of researchSource) {
     const translation = researchTranslations.get(source.topicId);
@@ -173,6 +175,11 @@ export function buildLocalePack({ locale, plan, topics, clusters, dependencies, 
       version: research.version,
       sourceVersion: research.version,
       recordCount: translatedResearch.length,
+      coverage: {
+        topicCount: research.records.length,
+        withTranslation: translatedResearch.length,
+        pendingTopicIds: pendingResearch,
+      },
       notes: notes?.notes ?? [],
       records: translatedResearch,
     },
@@ -210,6 +217,7 @@ export function writeLocalePack(locale, pack, { manifest, generatedAt, dataDirec
       clusters: pack['clusters.json'].clusterCount,
       dependencies: pack['dependencies.json'].edgeCount,
       teachingResearch: pack['teaching-research.json'].recordCount,
+      teachingResearchPending: pack['teaching-research.json'].coverage.pendingTopicIds.length,
     },
     files,
   };

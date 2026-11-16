@@ -148,6 +148,7 @@ function pack(overrides = {}) {
       locale: 'zh-Hans',
       version: 'v1',
       recordCount: 1,
+      coverage: { topicCount: 1, withTranslation: 1, pendingTopicIds: [] },
       notes: [],
       records: [restoreResearchRecord(englishRecord, translatedRecord)],
       ...overrides.research,
@@ -194,6 +195,23 @@ test('a changed array length is reported', () => {
   broken.topics.topics[0].evidence = [];
   const errors = checkLocalePack('zh-Hans', broken, context);
   assert.ok(errors.some(error => error.includes('evidence has 0 rows')));
+});
+
+test('a research record may be pending when the pack declares the gap', () => {
+  const partial = pack();
+  partial['teaching-research.json'].records = [];
+  partial['teaching-research.json'].recordCount = 0;
+  partial['teaching-research.json'].coverage = { topicCount: 1, withTranslation: 0, pendingTopicIds: ['mt_BBB'] };
+  assert.deepEqual(checkLocalePack('zh-Hans', partial, context), []);
+});
+
+test('an undeclared missing research record is reported', () => {
+  const partial = pack();
+  partial['teaching-research.json'].records = [];
+  partial['teaching-research.json'].recordCount = 0;
+  partial['teaching-research.json'].coverage = { topicCount: 1, withTranslation: 0, pendingTopicIds: [] };
+  const errors = checkLocalePack('zh-Hans', partial, context);
+  assert.ok(errors.some(error => error.includes('missing translation for mt_BBB')));
 });
 
 test('a changed identifier in the research record is reported', () => {

@@ -82,12 +82,22 @@
     {
       "title": "locale teaching research",
       "type": "object",
-      "required": ["locale", "version", "recordCount", "records"],
+      "required": ["locale", "version", "recordCount", "coverage", "records"],
       "properties": {
         "locale": { "type": "string", "minLength": 2 },
         "version": { "type": "string", "minLength": 1 },
         "sourceVersion": { "type": "string", "minLength": 1 },
         "recordCount": { "type": "integer", "minimum": 0 },
+        "coverage": {
+          "type": "object",
+          "required": ["topicCount", "withTranslation", "pendingTopicIds"],
+          "properties": {
+            "topicCount": { "type": "integer", "minimum": 0 },
+            "withTranslation": { "type": "integer", "minimum": 0 },
+            "pendingTopicIds": { "type": "array", "items": { "type": "string", "pattern": "^mt_" } }
+          },
+          "additionalProperties": false
+        },
         "notes": { "type": "array", "items": { "type": "string" } },
         "records": {
           "type": "array",

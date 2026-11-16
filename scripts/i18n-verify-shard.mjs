@@ -25,6 +25,9 @@ function codeTokens(text) {
     const token = match[0];
     if (ORDINAL.test(token)) continue;
     if ((token.match(/[A-Za-z]/g) ?? []).length < 2) continue;
+    // A curriculum code carries an upper-case run (4-PS4-1, AC9TDE2P04, KS1);
+    // a lower-case hyphenated phrase (5-minute, 3000-year) is prose.
+    if (!/[A-Z]/.test(token)) continue;
     tokens.add(token);
   }
   return [...tokens];

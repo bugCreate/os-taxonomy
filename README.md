@@ -104,6 +104,7 @@ The taxonomy ships in English. A **locale pack** adds a language without touchin
 | [`data/i18n/zh-Hans/dependencies.json`](data/i18n/zh-Hans/dependencies.json) | Simplified Chinese prerequisite reasons. |
 | [`data/i18n/zh-Hans/teaching-research.json`](data/i18n/zh-Hans/teaching-research.json) | Simplified Chinese teaching research. |
 | [`data/i18n/zh-Hans/labels.json`](data/i18n/zh-Hans/labels.json) | Subject, domain, type and curriculum labels. |
+| [`data/i18n/zh-Hans/notes.json`](data/i18n/zh-Hans/notes.json) | The Chinese release notes of the research export. |
 | [`data/i18n/zh-Hans/manifest.json`](data/i18n/zh-Hans/manifest.json) | Locale counts and checksums. |
 
 Join a translation to its source by id — `topic.id`, `topicId`, `prerequisiteId`, or `(subject, domain, ageRangeStart)` for a domain summary. `npm run i18n:build zh-Hans` publishes `dist/zh-Hans/` for applications, with the English original kept beside every translated field.
