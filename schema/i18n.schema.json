@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://withmarble.com/taxonomy/schema/i18n.schema.json",
+  "title": "Marble Skill Taxonomy — parallel locale pack",
+  "description": "One locale pack holds five files under data/i18n/<locale>/: topics.json, clusters.json, dependencies.json, teaching-research.json and labels.json. Every file keeps the stable identifiers of the English dataset and replaces only the prose. The deep integrity rules (coverage, structure parity, code and placeholder preservation) live in scripts/check-i18n.mjs; this schema describes the shape of each file.",
+  "anyOf": [
+    {
+      "title": "locale topics",
+      "type": "object",
+      "required": ["locale", "version", "topicCount", "topics"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "version": { "type": "string", "minLength": 1 },
+        "topicCount": { "type": "integer", "minimum": 0 },
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "name", "description", "evidence", "assessmentPrompt"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^mt_" },
+              "name": { "type": ["string", "null"] },
+              "description": { "type": ["string", "null"] },
+              "evidence": { "type": "array", "items": { "type": "string" } },
+              "assessmentPrompt": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "locale clusters",
+      "type": "object",
+      "required": ["locale", "version", "clusterCount", "clusters"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "version": { "type": "string", "minLength": 1 },
+        "clusterCount": { "type": "integer", "minimum": 0 },
+        "clusters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["subject", "domain", "ageRangeStart", "summary"],
+            "properties": {
+              "subject": { "type": "string" },
+              "domain": { "type": "string" },
+              "ageRangeStart": { "type": "integer" },
+              "summary": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "locale dependencies",
+      "type": "object",
+      "required": ["locale", "version", "edgeCount", "dependencies"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "version": { "type": "string", "minLength": 1 },
+        "edgeCount": { "type": "integer", "minimum": 0 },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["topicId", "prerequisiteId", "reason"],
+            "properties": {
+              "topicId": { "type": "string", "pattern": "^mt_" },
+              "prerequisiteId": { "type": "string", "pattern": "^mt_" },
+              "reason": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "locale teaching research",
+      "type": "object",
+      "required": ["locale", "version", "recordCount", "records"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "version": { "type": "string", "minLength": 1 },
+        "sourceVersion": { "type": "string", "minLength": 1 },
+        "recordCount": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "array", "items": { "type": "string" } },
+        "records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["topicId", "pedagogy", "learn", "assess", "sources", "confidence"],
+            "properties": {
+              "topicId": { "type": "string", "pattern": "^mt_" },
+              "pedagogy": {
+                "type": "object",
+                "required": ["summary", "bestPractices", "keyRepresentations", "commonMisconceptions"],
+                "properties": {
+                  "summary": { "type": "string" },
+                  "bestPractices": { "type": "array", "items": { "type": "string" } },
+                  "keyRepresentations": { "type": "array", "items": { "type": "string" } },
+                  "commonMisconceptions": { "type": "array", "items": { "type": "string" } }
+                },
+                "additionalProperties": false
+              },
+              "learn": {
+                "type": "object",
+                "required": ["summary", "activities", "constraints", "reviewNotes"],
+                "properties": {
+                  "summary": { "type": "string" },
+                  "activities": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["title", "learnerActions", "intendedInsight", "feedback", "rationale", "sourceClaims"],
+                      "properties": {
+                        "title": { "type": "string" },
+                        "learnerActions": { "type": "array", "items": { "type": "string" } },
+                        "intendedInsight": { "type": "string" },
+                        "feedback": { "type": "array", "items": { "type": "string" } },
+                        "rationale": { "type": "string" },
+                        "sourceClaims": { "type": "array", "items": { "type": "string" } }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "constraints": { "type": "array", "items": { "type": "string" } },
+                  "reviewNotes": { "type": "array", "items": { "type": "string" } }
+                },
+                "additionalProperties": false
+              },
+              "assess": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "required": ["method", "diagnosticPrompt", "correctAnswer", "whatMakesItDiscriminate", "errorPatterns", "probeDeeper", "responseLevels", "poeTask"],
+                    "properties": {
+                      "method": { "type": "string" },
+                      "diagnosticPrompt": { "type": "string" },
+                      "correctAnswer": { "type": "string" },
+                      "whatMakesItDiscriminate": { "type": "string" },
+                      "errorPatterns": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": ["pattern", "kind", "revealedBy", "nextMove", "distractor", "reteachPrerequisiteId"],
+                          "properties": {
+                            "pattern": { "type": "string" },
+                            "kind": { "type": "string" },
+                            "revealedBy": { "type": "string" },
+                            "nextMove": { "type": "string" },
+                            "distractor": { "type": ["string", "null"] },
+                            "reteachPrerequisiteId": { "type": ["string", "null"] }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "probeDeeper": { "type": "array", "items": { "type": "string" } },
+                      "responseLevels": {
+                        "type": "object",
+                        "required": ["gap", "partial", "full"],
+                        "properties": {
+                          "gap": { "type": "string" },
+                          "partial": { "type": "string" },
+                          "full": { "type": "string" }
+                        },
+                        "additionalProperties": false
+                      },
+                      "poeTask": { "type": ["string", "null"] }
+                    },
+                    "additionalProperties": false
+                  },
+                  { "type": "null" }
+                ]
+              },
+              "sources": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["claim", "source", "url", "verified"],
+                  "properties": {
+                    "claim": { "type": "string" },
+                    "source": { "type": "string" },
+                    "url": { "type": "string" },
+                    "verified": { "type": "boolean" }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "confidence": { "type": "string" },
+              "provenance": { "type": "object" },
+              "publicationNotes": { "type": "object" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "locale labels",
+      "type": "object",
+      "required": ["locale", "version", "subjects", "domains", "types"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "version": { "type": "string", "minLength": 1 },
+        "subjects": { "type": "object", "additionalProperties": { "type": "string" } },
+        "domains": { "type": "object", "additionalProperties": { "type": "string" } },
+        "types": { "type": "object", "additionalProperties": { "type": "string" } },
+        "strengths": { "type": "object", "additionalProperties": { "type": "string" } },
+        "curricula": { "type": "object", "additionalProperties": { "type": "string" } },
+        "assessmentMethods": { "type": "object", "additionalProperties": { "type": "string" } },
+        "errorKinds": { "type": "object", "additionalProperties": { "type": "string" } },
+        "confidence": { "type": "object", "additionalProperties": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "locale notes",
+      "type": "object",
+      "required": ["locale", "version", "notes"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "version": { "type": "string", "minLength": 1 },
+        "notes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    }
+  ]
+}

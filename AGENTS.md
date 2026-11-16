@@ -31,3 +31,16 @@ also apply to manual contributions. Using an agent or skill is optional for cont
   a PR merged into a feature branch has not reached the default branch, and
   squash merges can change commit identities.
 
+## Localisation
+
+A locale pack under `data/i18n/<locale>/` holds translated prose beside the
+stable ids of the English dataset. The English files stay the source of truth:
+never translate a curriculum standard, never change an id, a curriculum code or
+an enum inside a locale file, and never let a locale file replace the English
+one. Use the published glossary in `docs/i18n/` for terminology.
+
+After changing `data/topics.json`, `data/clusters.json`,
+`data/dependencies.json` or `data/teaching-research.json`, run
+`npm run i18n:check`: a locale pack that no longer matches the English source
+fails `npm run validate`. See [docs/i18n.md](docs/i18n.md).
+

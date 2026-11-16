@@ -32,6 +32,7 @@ into context. Read the small candidate set needed for the goal:
 | `data/topics.json` | `topics[]`: `id`, `name`, `description`, `subject`, `domain`, age range, `type`, `evidence`, `assessmentPrompt`, `standards`. Search name/description, then inspect actual candidates. |
 | `data/dependencies.json` | `dependencies[]`: `topicId` **depends on** `prerequisiteId`; `strength` is `hard` or `soft`. Inspect immediate prerequisites first; expand only as needed. |
 | `data/teaching-research.json` | `records[]` join through `topicId`, not an internal DB row ID. `coverage.missingTopicIds` records known gaps. |
+| `data/i18n/<locale>/` | Optional locale pack: translated topic, cluster, dependency and teaching-research prose, joined by the same ids. Use it for a non-English experience; the English files stay authoritative and a missing locale falls back to English. |
 | `data/manifest.json` | Version, per-file checksums and counts. Research `topicFileSha256` binds it to the exact topic-file bytes. |
 | `schema/canonical-teaching-research-v2.schema.json` | Current authored public shape; inspect when preparing a research contribution. |
 

@@ -17,6 +17,7 @@ import { checkManifestTopicInventory } from './check-manifest-topic-inventory.mj
 import { checkTeachingResearch, checkResearchArchiveReferences } from './check-public-teaching-research.mjs';
 import { findDependencyCycle } from './check-dependency-cycles.mjs';
 import { checkTopicCompatibility } from './check-curriculum-alignments.mjs';
+import { checkAllLocales } from './check-i18n.mjs';
 
 const DATA = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'data');
 const load = (name) => JSON.parse(readFileSync(resolve(DATA, name), 'utf8'));
@@ -124,6 +125,12 @@ for (const [name, meta] of Object.entries(manifest.files ?? {})) {
   check(actual === meta.sha256, `checksum mismatch for ${name}`);
   check(bytesOf(name).length === meta.bytes, `byte count mismatch for ${name}`);
 }
+
+// --- locale packs ------------------------------------------------------------
+// A locale pack never changes the English data, but it must stay complete
+// and faithful to it: a wrong translation is worse than a missing one.
+const localeErrors = checkAllLocales(resolve(DATA, '..'));
+for (const error of localeErrors) errors.push(`i18n: ${error}`);
 
 // --- report -----------------------------------------------------------------
 if (errors.length) {

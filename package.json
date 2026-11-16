@@ -19,6 +19,13 @@
     "player:start": "npm --prefix player start",
     "player:test": "npm --prefix player test",
     "player:test:browser": "npm --prefix player run test:browser",
-    "skill:validate": "python3 .agents/skills/marble-voice-lesson/scripts/validate_bundle.py"
+    "skill:validate": "python3 .agents/skills/marble-voice-lesson/scripts/validate_bundle.py",
+    "i18n:shards": "node scripts/i18n-shards.mjs",
+    "i18n:merge": "node scripts/i18n-merge.mjs",
+    "i18n:verify": "node scripts/i18n-verify-shard.mjs",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "i18n:build": "node scripts/build-locale.mjs",
+    "i18n:resume": "node scripts/i18n-resume.mjs",
+    "i18n:term-audit": "node scripts/i18n-term-audit.mjs"
   }
 }

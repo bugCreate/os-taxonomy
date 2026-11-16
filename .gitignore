@@ -13,3 +13,7 @@ player/artifacts/
 player/.venv/
 **/__pycache__/
 *.pyc
+
+# i18n translation workspace and build output
+work/
+dist/

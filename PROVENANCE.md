@@ -2,6 +2,8 @@
 
 The micro-topics, the prerequisite graph, and all of Marble's authored text are original work, released under ODbL 1.0 + CC BY-SA 4.0 (see [README](README.md#license)).
 
+**Translated locale packs are derivative works of that original text.** A locale pack under `data/i18n/<locale>/` holds a translation of Marble's authored prose — topic names, descriptions, mastery evidence, assessment prompts, domain summaries, prerequisite reasons and teaching research. Because those strings are ODbL + CC BY-SA 4.0, a translation is published under the same terms with the same attribution, and a derivative of the translation stays under the same terms. The locale pack never changes the English files, the topic ids, the prerequisite graph or the curriculum codes. Curriculum standard text is **not** translated: `data/curriculum-standards.json` keeps the upstream wording and its own licence, and only codes are carried into the graph. See [docs/i18n.md](docs/i18n.md).
+
 **`data/curriculum-standards.json` is different.** Those standards are extracted from external curriculum frameworks that Marble does **not** own and **cannot** relicense. You can only receive from us the rights the upstream holders grant. Each source's terms — and exactly what we ship — are below.
 
 

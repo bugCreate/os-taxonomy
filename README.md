@@ -63,17 +63,20 @@ Most curriculum data is either a flat list of standards or locked inside a produ
 
 ### Subjects
 
-| Subject | Topics |
-|---|---:|
-| Computing | 52 |
-| English | 339 |
-| Geography | 22 |
-| History | 109 |
-| Learning to Learn | 18 |
-| Life Skills | 46 |
-| Mathematics | 581 |
-| Personal & Social Development | 118 |
-| Science | 576 |
+| Subject | Topics | 中文 |
+|---|---:|---|
+| Computing | 52 | 计算机 |
+| English | 339 | 英语 |
+| Geography | 34 | 地理 |
+| History | 118 | 历史 |
+| Learning to Learn | 20 | 学习方法 |
+| Life Skills | 49 | 生活技能 |
+| Mathematics | 583 | 数学 |
+| Personal & Social Development | 123 | 个人与社会发展 |
+| Science | 582 | 科学 |
+| Art & Design | 4 | 艺术与设计 |
+| Performing Arts | 4 | 表演艺术 |
+| Français | 4 | 法语 |
 
 ## Files
 
@@ -89,6 +92,23 @@ All data lives in [`data/`](data/) as UTF-8 JSON. See [`schema/`](schema/) for J
 | [`data/archived-teaching-research.json`](data/archived-teaching-research.json) | Historical guidance for merged or refocused topics, with original records and current topic associations. |
 | [`data/manifest.json`](data/manifest.json) | Counts, per-subject breakdown, per-file checksums. |
 | [`data/curriculum-alignments.json`](data/curriculum-alignments.json) | Scoped framework, jurisdiction and global age contexts; source for flat compatibility fields. |
+
+### Languages
+
+The taxonomy ships in English. A **locale pack** adds a language without touching the English data files: the pack keeps the same topic ids, prerequisite edges and curriculum codes, and carries the translated prose beside them.
+
+| File | What it holds |
+|---|---|
+| [`data/i18n/zh-Hans/topics.json`](data/i18n/zh-Hans/topics.json) | Simplified Chinese topic names, descriptions, mastery evidence and assessment prompts. |
+| [`data/i18n/zh-Hans/clusters.json`](data/i18n/zh-Hans/clusters.json) | Simplified Chinese domain summaries. |
+| [`data/i18n/zh-Hans/dependencies.json`](data/i18n/zh-Hans/dependencies.json) | Simplified Chinese prerequisite reasons. |
+| [`data/i18n/zh-Hans/teaching-research.json`](data/i18n/zh-Hans/teaching-research.json) | Simplified Chinese teaching research. |
+| [`data/i18n/zh-Hans/labels.json`](data/i18n/zh-Hans/labels.json) | Subject, domain, type and curriculum labels. |
+| [`data/i18n/zh-Hans/manifest.json`](data/i18n/zh-Hans/manifest.json) | Locale counts and checksums. |
+
+Join a translation to its source by id — `topic.id`, `topicId`, `prerequisiteId`, or `(subject, domain, ageRangeStart)` for a domain summary. `npm run i18n:build zh-Hans` publishes `dist/zh-Hans/` for applications, with the English original kept beside every translated field.
+
+See [docs/i18n.md](docs/i18n.md) for the design, [docs/i18n.zh-Hans.md](docs/i18n.zh-Hans.md) for the 中文说明 and [docs/i18n/glossary.zh-Hans.md](docs/i18n/glossary.zh-Hans.md) for the 术语表. Curriculum standard text is **not** translated: it stays in `data/curriculum-standards.json` under its upstream licence, and only codes enter the graph.
 
 The catalogue contains **19 sources / 8,313 standards/source-position records**. A separate [NCERT NCF-SE October 2024 edition proposal](reports/ncert-ncfse-preparatory-core-catalogue-2026-11-09.md) contributes 254 formal stage goals/competencies: 172 Preparatory records shared across Grades 3–5 and [82 Foundational records](reports/ncert-ncfse-foundational-catalogue-2026-11-09.md) preserving full ages 3–8 stage scope, without grade clones; the [Arts/PE extension](reports/ncert-ncfse-preparatory-arts-pe-catalogue-2026-11-09.md) preserves nested source-set applicability. The NCERT foundational source contributes 316 positions: 67 Maths, 34 English L2, 66 Physical/Motor, 34 Socio-emotional/Ethical, 30 Arts, 18 Learning Habits and 11 Cognitive positions intersecting Grades 1–2, plus 56 shared-stage positions from the [Arts syllabus explicit outcome column](reports/ncert-foundational-arts-syllabus-catalogue-2026-11-09.md) without an invented required grade. Shared grade cells and a repeated printed English requirement are preserved; source-position totals count neither distinct skills nor grade memberships. See the [NCERT catalogue report](reports/ncert-english-l2-catalogue-2026-11-09.md) and [remaining primary scope](reports/ncert-primary-catalogue-scope-2026-11-09.md). It includes 620 Australian Curriculum v9 content descriptions and 3,862 Ontario expectations from nine elementary documents. Ontario is exported as codes and official source links only; ingestion of source expectations is separate from authoring topic coverage. Ontario Grades 1–7 Mathematics have received focused taxonomy authoring passes. The [Grade 2 report](reports/ontario-grade2-mathematics-2026-10-23.md) distinguishes reused claims, extracted elementary claims and the concurrency gap; mappings do not certify learner mastery of every linked topic. The [Grade 3 report](reports/ontario-grade3-mathematics-2026-10-23.md) records reuse of 114 existing topics, the congruence extension and prerequisite repairs; no topics were added. The [Grade 4 report](reports/ontario-grade4-mathematics-2026-10-24.md) records reuse of 126 existing topics, two missing skills, two focused extractions and prerequisite repairs. The [Grade 5 report](reports/ontario-grade5-mathematics-2026-10-24.md) records reuse of 145 existing topics, one missing mathematical representation, one financial/civic concept and one focused extraction. The [Grade 6 report](reports/ontario-grade6-mathematics-2026-10-27.md) records reuse of 173 existing topics and five additions: two procedures, one focused extraction and two financial-content claims. The [Grade 7 report](reports/ontario-grade7-mathematics-2026-10-27.md) records reuse of 171 existing topics and two spatial additions; the square-root proposal was withdrawn.
 
