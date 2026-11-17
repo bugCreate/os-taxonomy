@@ -48,7 +48,11 @@ function looksUntranslated(chinese) {
   const outside = chinese
     .replace(/[“"「][^”"」]*[”"」]/g, ' ')
     .replace(/（[^）]*）/g, ' ')
-    .replace(/\([^)]*\)/g, ' ');
+    .replace(/\([^)]*\)/g, ' ')
+    // Urls, report paths and anchors are copied verbatim; they are not prose.
+    .replace(/https?:\/\/\S+/g, ' ')
+    .replace(/[\w./-]+\.(?:md|json|csv|txt|docx|pdf)(?:#[\w-]+)?/g, ' ')
+    .replace(/#[\w-]+/g, ' ');
   const cjk = (outside.match(/[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/g) ?? []).length;
   const latin = (outside.match(/[A-Za-z]/g) ?? []).length;
   if (latin < 40) return false;

@@ -2581,7 +2581,7 @@
     {
       "topicId": "mt_8A3pZNOp7Z",
       "prerequisiteId": "mt_pjfmCMMPjO",
-      "reason": "Y4（四年级）用已知或推导出的事实做心算乘除，是把心算扩展到更大数目的前提"
+      "reason": "四年级（英国）用已知事实或推导出的事实做心算乘除，是把心算扩展到更大数目的前提"
     },
     {
       "topicId": "mt_8ad4U6msea",
@@ -2711,7 +2711,7 @@
     {
       "topicId": "mt_8jFSnXxqQD",
       "prerequisiteId": "mt_p-nbe0w_lf",
-      "reason": "求带括号算式的值，是对 Y5（五年级）多步计算技能的规范化"
+      "reason": "求带括号算式的值，是对五年级（英国）多步计算技能的规范化"
     },
     {
       "topicId": "mt_8jFSnXxqQD",
@@ -2726,7 +2726,7 @@
     {
       "topicId": "mt_8OAGVdeTJ_",
       "prerequisiteId": "mt_TdV9YGJEoY",
-      "reason": "把角看作转动，是在 Y2（二年级）四分之一圈、半圈、四分之三圈的基础上延伸"
+      "reason": "把角看作转动，是在二年级（英国）四分之一圈、半圈、四分之三圈的基础上延伸"
     },
     {
       "topicId": "mt_8oAzr0WxRb",
@@ -2756,7 +2756,7 @@
     {
       "topicId": "mt_8qQ2IosZZw",
       "prerequisiteId": "mt_B1ATUEVNPz",
-      "reason": "卡与巴以及来世神学，建立在了解奥西里斯、阿努比斯及其职能的基础上"
+      "reason": "Ka/ba（卡与巴）与来世神学，建立在了解奥西里斯（Osiris）、阿努比斯（Anubis）及其职能的基础上"
     },
     {
       "topicId": "mt_8qQ2IosZZw",
@@ -2846,7 +2846,7 @@
     {
       "topicId": "mt_8xVHooT4aI",
       "prerequisiteId": "mt_K3R0yaHVcx",
-      "reason": "8—9 岁的建模是 9—10 岁水平的前提"
+      "reason": "8-9 岁的建模是 9-10 岁水平的前提"
     },
     {
       "topicId": "mt_8xVHooT4aI",
@@ -2866,7 +2866,7 @@
     {
       "topicId": "mt_933BohS9BH",
       "prerequisiteId": "mt_IegHBHERVa",
-      "reason": "把小数与保留 2dp 的数作比较（Y4，四年级），是比较保留 3dp 的数的前提"
+      "reason": "四年级（英国）把小数与保留 2dp 的数作比较，是比较保留 3dp 的数的前提"
     },
     {
       "topicId": "mt_933BohS9BH",
@@ -2931,7 +2931,7 @@
     {
       "topicId": "mt_9hBs430cU4",
       "prerequisiteId": "mt_tHtjfjjFrl",
-      "reason": "-able/-ible 和 -ably/-ibly 的构词模式，直接建立在 Y3-4（三至四年级）课程中的后缀知识之上"
+      "reason": "-able/-ible 和 -ably/-ibly 的构词模式，直接建立在三至四年级（英国）课程中的后缀知识之上"
     },
     {
       "topicId": "mt_9IzhGUZ30z",
@@ -2946,7 +2946,7 @@
     {
       "topicId": "mt_9IzhGUZ30z",
       "prerequisiteId": "mt_YKkCM63fSC",
-      "reason": "许多数词不规则，必须作为常见视觉词（sight words）来认读"
+      "reason": "许多数词不规则，必须作为常见词（sight words）来认读"
     },
     {
       "topicId": "mt_9k1qcpvVi_",
@@ -2961,17 +2961,17 @@
     {
       "topicId": "mt_9KmVWCuh5_",
       "prerequisiteId": "mt_CUmjcE7W6c",
-      "reason": "Y6（六年级）的表征熟练度，是在 Y5（五年级）多种表征技能上的延伸"
+      "reason": "六年级（英国）的表征熟练度，是在五年级（英国）多种表征技能上的延伸"
     },
     {
       "topicId": "mt_9KmVWCuh5_",
       "prerequisiteId": "mt_fxPtngwUfz",
-      "reason": "在坐标网格上配合两个规律数列，是 Y6（六年级）的关键内容"
+      "reason": "在坐标网格上配合两个规律数列，是六年级（英国）的关键内容"
     },
     {
       "topicId": "mt_9KmVWCuh5_",
       "prerequisiteId": "mt_HlNSurPVDp",
-      "reason": "折线图是 Y6（六年级）表征熟练度所涉及的一种表征"
+      "reason": "折线图是六年级（英国）表征熟练度所涉及的一种表征"
     },
     {
       "topicId": "mt_9L3NQqgqRd",
@@ -2981,7 +2981,7 @@
     {
       "topicId": "mt_9L3NQqgqRd",
       "prerequisiteId": "mt_pAcaehday5",
-      "reason": "在数轴上表示和估计数，是在 Y1（一年级）数的表示基础上发展而来"
+      "reason": "在数轴上表示和估计数，是在一年级（英国）数的表示基础上发展而来"
     },
     {
       "topicId": "mt_9L3NQqgqRd",
@@ -3036,7 +3036,7 @@
     {
       "topicId": "mt_9P9o6d0Qm3",
       "prerequisiteId": "mt_lIs10UMkPG",
-      "reason": "写前规划建立在先前的写作组合技能之上"
+      "reason": "写前规划建立在先前的成文写作技能之上"
     },
     {
       "topicId": "mt_9P9o6d0Qm3",
@@ -3051,7 +3051,7 @@
     {
       "topicId": "mt_9P9o6d0Qm3",
       "prerequisiteId": "mt_PJyCGJz5Hv",
-      "reason": "写作规划建立在 Y1（一年级）口头试讲的基础上"
+      "reason": "写作规划建立在一年级（英国）口头试讲的基础上"
     },
     {
       "topicId": "mt_9qF97kGhvq",
@@ -3071,7 +3071,7 @@
     {
       "topicId": "mt_9QzSnn8m80",
       "prerequisiteId": "mt_RVK655t391",
-      "reason": "负数运算是在 Y6（六年级）情境中运用负数的基础上延伸"
+      "reason": "负数运算是在六年级（英国）情境中运用负数的基础上延伸"
     },
     {
       "topicId": "mt_9REmUc8r4D",
@@ -3156,12 +3156,12 @@
     {
       "topicId": "mt_9Y96vxG_LH",
       "prerequisiteId": "mt_ifPDOYvUqm",
-      "reason": "分数除以分数，是在 Y5（五年级）单位分数除以整数的基础上延伸"
+      "reason": "分数除以分数，是在五年级（英国）单位分数除以整数的基础上延伸"
     },
     {
       "topicId": "mt_9yFAtUkoYr",
       "prerequisiteId": "mt_sZXPK1FnRB",
-      "reason": "代词的连贯性与反身代词，建立在基本代词用法之上"
+      "reason": "代词的衔接性与反身代词，建立在基本代词用法之上"
     },
     {
       "topicId": "mt_A0htaNaK7b",
@@ -3176,17 +3176,17 @@
     {
       "topicId": "mt_a0yi2vpoUn",
       "prerequisiteId": "mt_CdB3nZHkEA",
-      "reason": "“澳大利亚的节日、象征与庆典”支撑“20 世纪初权利的变化”"
+      "reason": "“澳大利亚的节日、象征与庆典”支撑“20 世纪权利的变化”"
     },
     {
       "topicId": "mt_a0yi2vpoUn",
       "prerequisiteId": "mt_mRU4H9-fgb",
-      "reason": "“20 世纪初权利的变化”建立在“带注释的时间线”之上"
+      "reason": "“20 世纪权利的变化”建立在“带注释的时间线”之上"
     },
     {
       "topicId": "mt_a0yi2vpoUn",
       "prerequisiteId": "mt_QayfDN4rTB",
-      "reason": "“20 世纪初权利的变化”建立在“联邦与宪法”之上"
+      "reason": "“20 世纪权利的变化”建立在“联邦与宪法”之上"
     },
     {
       "topicId": "mt_a1FdAsRKOF",
@@ -3261,7 +3261,7 @@
     {
       "topicId": "mt_a3dov8CZkq",
       "prerequisiteId": "mt_pyMD_SIiYO",
-      "reason": "7—8 岁的解释与论证，是 8—9 岁水平的前提"
+      "reason": "7-8 岁的解释与论证，是 8-9 岁水平的前提"
     },
     {
       "topicId": "mt_a3dov8CZkq",
@@ -3276,7 +3276,7 @@
     {
       "topicId": "mt_a6m7PqTuJN",
       "prerequisiteId": "mt_F978c32kDr",
-      "reason": "必须先掌握单字母音，才能学 r 控制的元音"
+      "reason": "必须先掌握单字母音，才能学受 r 控制的元音"
     },
     {
       "topicId": "mt_A8pSrj0E-D",
@@ -3301,7 +3301,7 @@
     {
       "topicId": "mt_AabJisinfi",
       "prerequisiteId": "mt_TgHxujL81r",
-      "reason": "分数乘分数是在 Y5（五年级）分数乘整数的基础上延伸"
+      "reason": "分数乘分数是在五年级（英国）分数乘整数的基础上延伸"
     },
     {
       "topicId": "mt__ab4knIaSL",
@@ -3346,7 +3346,7 @@
     {
       "topicId": "mt_Ac7oMWhyPw",
       "prerequisiteId": "mt_933BohS9BH",
-      "reason": "把小数与保留三位小数的数作比较，是在 Y5（五年级）小数比较基础上的延伸"
+      "reason": "把小数与保留三位小数的数作比较，是在五年级（英国）小数比较基础上的延伸"
     },
     {
       "topicId": "mt_Ac7oMWhyPw",
@@ -3506,7 +3506,7 @@
     {
       "topicId": "mt_AhfyJoTQtY",
       "prerequisiteId": "mt_EqXlZfB4jp",
-      "reason": "在听写中运用所教的高频常用词（GPC），需要先知道 GPC 是什么"
+      "reason": "在听写中运用所教的 GPC（字形—音素对应），需要先理解 GPC 是什么"
     },
     {
       "topicId": "mt_AhfyJoTQtY",
@@ -3566,7 +3566,7 @@
     {
       "topicId": "mt_aivrWs6jrS",
       "prerequisiteId": "mt_2jbUekyTu4",
-      "reason": "7—8 岁的重复推理是 8—9 岁水平的前提"
+      "reason": "7-8 岁的重复推理是 8-9 岁水平的前提"
     },
     {
       "topicId": "mt_aivrWs6jrS",
@@ -3606,7 +3606,7 @@
     {
       "topicId": "mt_AKAtWEwpcj",
       "prerequisiteId": "mt_mr_Vk7FGzK",
-      "reason": "给两位数加个位，是在 Y1（一年级）20 以内加法的基础上延伸"
+      "reason": "给两位数加个位，是在一年级（英国）20 以内加法的基础上延伸"
     },
     {
       "topicId": "mt_AKAtWEwpcj",
@@ -3636,7 +3636,7 @@
     {
       "topicId": "mt_ALUrJpY0cZ",
       "prerequisiteId": "mt_PNSyfH56eQ",
-      "reason": "把百分数看作分数／小数，是在 Y6（六年级）百分数计算基础上的延伸"
+      "reason": "把百分数看作分数／小数，是在六年级（英国）百分数计算基础上的延伸"
     },
     {
       "topicId": "mt_Am6mmH2X0s",
@@ -3721,7 +3721,7 @@
     {
       "topicId": "mt_anAe11HAEH",
       "prerequisiteId": "mt_HFRYjTb-Z5",
-      "reason": "熟练完成 1000 以内（within-1000）的计算，有助于解混合运算题"
+      "reason": "熟练完成 1000 以内的计算，有助于解混合运算题"
     },
     {
       "topicId": "mt_anAe11HAEH",
@@ -3771,7 +3771,7 @@
     {
       "topicId": "mt_AR-K72OIIO",
       "prerequisiteId": "mt_EmR5n58jZt",
-      "reason": "较难的题目是在 Y3（三年级）放大缩小／对应关系题目的基础上延伸"
+      "reason": "较难的题目是在三年级（英国）放大缩小／对应关系题目的基础上延伸"
     },
     {
       "topicId": "mt_AR-K72OIIO",
@@ -8291,7 +8291,7 @@
     {
       "topicId": "mt_HNOPGJYiRK",
       "prerequisiteId": "mt_nvdpxAJTBG",
-      "reason": "认读 5 分钟的时间间隔，得益于以 5 为单位跳数"
+      "reason": "认读 5-minute（5 分钟）的时间间隔，得益于以 5 为单位跳数"
     },
     {
       "topicId": "mt_hoc__Jx3sa",
@@ -8566,7 +8566,7 @@
     {
       "topicId": "mt_HZyUwycFvf",
       "prerequisiteId": "mt_pTz6u49fQt",
-      "reason": "埃及的终结需要理解这条 3000 年的时间线"
+      "reason": "埃及的终结需要理解这条 3000-year（3000 年）的时间线"
     },
     {
       "topicId": "mt_HZyUwycFvf",
@@ -15251,12 +15251,12 @@
     {
       "topicId": "mt_sh1Mq-mshx",
       "prerequisiteId": "mt_FwI7q7DSIx",
-      "reason": "“轮流发言与分享”支持“请求许可”"
+      "reason": "“轮流与分享”支持“征得许可”"
     },
     {
       "topicId": "mt_sh1Mq-mshx",
       "prerequisiteId": "mt_YbX3LD0Eca",
-      "reason": "“倾听他人”支持“请求许可”"
+      "reason": "“倾听他人”支持“征得许可”"
     },
     {
       "topicId": "mt_SH7QgFl8-v",
@@ -15286,17 +15286,17 @@
     {
       "topicId": "mt_sHMpam8zcd",
       "prerequisiteId": "mt_jBQS-CicNn",
-      "reason": "“第一象限坐标”支持“所有数据都用数表示”"
+      "reason": "“第一象限坐标”支持“所有数据都是数字”"
     },
     {
       "topicId": "mt_sHMpam8zcd",
       "prerequisiteId": "mt_kH1DzOPsXG",
-      "reason": "“所有数据都用数表示”建立在“计算机的数据与信息”之上"
+      "reason": "“所有数据都是数字”建立在“计算机用的数据与信息”之上"
     },
     {
       "topicId": "mt_sHMpam8zcd",
       "prerequisiteId": "mt_QpJydot2Kh",
-      "reason": "“为特定目的选择图表”支持“所有数据都用数表示”"
+      "reason": "“为不同目的选择图表”支持“所有数据都是数字”"
     },
     {
       "topicId": "mt_SHVyE1CLUa",
@@ -15416,17 +15416,17 @@
     {
       "topicId": "mt_So_5wBv8fI",
       "prerequisiteId": "mt_DMvKfP4uGC",
-      "reason": "“字母笔顺家族”支持“工整而匀速地书写”"
+      "reason": "“字母书写家族”支持“工整而匀速地书写”"
     },
     {
       "topicId": "mt_So_5wBv8fI",
       "prerequisiteId": "mt_H7DquwQi_F",
-      "reason": "“工整而匀速地书写”建立在“书写大写字母”之上"
+      "reason": "“工整而匀速地书写”建立在“大写字母的书写”之上"
     },
     {
       "topicId": "mt_So_5wBv8fI",
       "prerequisiteId": "mt_WBfj79OqXz",
-      "reason": "“工整而匀速地书写”建立在“坐好并握好铅笔”之上"
+      "reason": "“工整而匀速地书写”建立在“坐姿与握笔”之上"
     },
     {
       "topicId": "mt_SoDP1fSQEB",
@@ -15441,7 +15441,7 @@
     {
       "topicId": "mt_SOM6Imm2sO",
       "prerequisiteId": "mt_-af65bxfdp",
-      "reason": "解读没有刻度标记的间隔，扩展了读有标注刻度的刻度"
+      "reason": "解读没有刻度标记的间隔，扩展了读取带标注刻度的做法"
     },
     {
       "topicId": "mt_SOM6Imm2sO",
@@ -15461,7 +15461,7 @@
     {
       "topicId": "mt_sPV503BQnI",
       "prerequisiteId": "mt__p5n8z5soJ",
-      "reason": "“我的第一个可视化程序”建立在“分步指令”之上（第一个程序就是一次开始事件加上一串顺序指令）"
+      "reason": "“我的第一个可视化程序”建立在“分步骤的指令说明”之上（第一个程序就是一次开始事件加上一串顺序指令）"
     },
     {
       "topicId": "mt_SqhXQhAEUf",
@@ -15526,7 +15526,7 @@
     {
       "topicId": "mt_SUOhjmRqv9",
       "prerequisiteId": "mt_VLu59hpQ4T",
-      "reason": "理解比喻义，与辨析词义上的细微差别相关联"
+      "reason": "理解比喻等修辞语言，与辨析词义上的细微差别相关联"
     },
     {
       "topicId": "mt_sUVeVXzRuq",
@@ -15546,12 +15546,12 @@
     {
       "topicId": "mt_svBtqePrBP",
       "prerequisiteId": "mt_cUpJvBD1YA",
-      "reason": "“自然地物、人为管理地物与建成地物”支持“地方在变化，也需要人们呵护”"
+      "reason": "“自然、人造与建造的地理特征”支持“地方在变化，也需要人们呵护”"
     },
     {
       "topicId": "mt_svBtqePrBP",
       "prerequisiteId": "mt_deexfCHU9m",
-      "reason": "“地方在变化，也需要人们呵护”建立在“减少人类影响”之上"
+      "reason": "“地方在变化，也需要人们呵护”建立在“减少人类的影响”之上"
     },
     {
       "topicId": "mt_svBtqePrBP",
@@ -15576,7 +15576,7 @@
     {
       "topicId": "mt_SXbZ3bC9z7",
       "prerequisiteId": "mt_ebPelt-qAl",
-      "reason": "SXbZ 允许“公分母/分子或用参照数比较”；通分生成等值分数只是其中一种方法。同分子/同分母的比较（HnKb）仍是硬前置"
+      "reason": "SXbZ 允许“公分母/分子或用基准数比较”；通分生成等值分数只是其中一种方法。同分子/同分母的比较（HnKb）仍是硬前置"
     },
     {
       "topicId": "mt_SXbZ3bC9z7",
@@ -15586,12 +15586,12 @@
     {
       "topicId": "mt_sxcE47yOvd",
       "prerequisiteId": "mt_DcSMuVWgKU",
-      "reason": "“倒叙、伏笔等手法”建立在“在写作中尝试比喻语言”之上"
+      "reason": "“倒叙、伏笔等手法”建立在“在写作中尝试比喻性语言”之上"
     },
     {
       "topicId": "mt_sxcE47yOvd",
       "prerequisiteId": "mt_j6ENpc8--_",
-      "reason": "“倒叙、伏笔等手法”建立在“规划叙事”之上"
+      "reason": "“倒叙、伏笔等手法”建立在“叙事的规划”之上"
     },
     {
       "topicId": "mt_sXRHr7tfS5",
@@ -15671,12 +15671,12 @@
     {
       "topicId": "mt_T0jF7ylSvV",
       "prerequisiteId": "mt_enj1sMcfOT",
-      "reason": "“过去时、现在时和进行时”支持“直接引语与间接引语”"
+      "reason": "“过去时、现在时与进行时”支持“引语与转述”"
     },
     {
       "topicId": "mt_T0jF7ylSvV",
       "prerequisiteId": "mt_-mw3JeIjhU",
-      "reason": "“直接引语与间接引语”建立在“为直接引语加标点”之上"
+      "reason": "“引语与转述”建立在“给直接引语加标点”之上"
     },
     {
       "topicId": "mt_t1JXeNgKcu",
@@ -15786,7 +15786,7 @@
     {
       "topicId": "mt_talf-sLn9a",
       "prerequisiteId": "mt_1VSfm9yiLn",
-      "reason": "就数据提问并作答，有助于读懂统计图"
+      "reason": "就数据提问并作答，有助于读懂茎叶图"
     },
     {
       "topicId": "mt_talf-sLn9a",
@@ -15801,22 +15801,22 @@
     {
       "topicId": "mt_talf-sLn9a",
       "prerequisiteId": "mt_c29FaCTNsx",
-      "reason": "使用简单图表和图例的经验，有助于制作统计图"
+      "reason": "使用简单图表和图例的经验，有助于制作茎叶图"
     },
     {
       "topicId": "mt_talf-sLn9a",
       "prerequisiteId": "mt_ebQURBOsM5",
-      "reason": "收集数据是有帮助的情境，但统计图也可以直接由给定的数据集制作"
+      "reason": "收集数据是有帮助的情境，但茎叶图也可以直接由给定的数据集制作"
     },
     {
       "topicId": "mt_tAtMET4EIU",
       "prerequisiteId": "mt_9XVFje6Tyr",
-      "reason": "求比一个数多/少 1000 的数，是按 10 的幂数数的前置知识"
+      "reason": "求比一个数多/少 1000 的数，是按 10 的幂步长计数的前置知识"
     },
     {
       "topicId": "mt_tAtMET4EIU",
       "prerequisiteId": "mt_QqG6IdmTSE",
-      "reason": "理解“×10”的关系，有助于按 10 的幂数数"
+      "reason": "理解“×10”的关系，有助于按 10 的幂步长计数"
     },
     {
       "topicId": "mt_-tcJeAhK5k",
@@ -15891,27 +15891,27 @@
     {
       "topicId": "mt_tF6XuKIq8_",
       "prerequisiteId": "mt_h_shhH-6DC",
-      "reason": "“人们为什么参与”建立在“社区的权利与责任”之上"
+      "reason": "“人们为什么要参与”建立在“社区中的权利与责任”之上"
     },
     {
       "topicId": "mt_tF6XuKIq8_",
       "prerequisiteId": "mt_QepALf3bin",
-      "reason": "“社会企业”支持“人们为什么参与”"
+      "reason": "“社会企业”支持“人们为什么要参与”"
     },
     {
       "topicId": "mt_TffvIu6VgG",
       "prerequisiteId": "mt_4GiE83rJF_",
-      "reason": "“是什么让一首诗浑然一体”建立在“押韵词”之上"
+      "reason": "“是什么让一首诗连成一体”建立在“押韵的词”之上"
     },
     {
       "topicId": "mt_TffvIu6VgG",
       "prerequisiteId": "mt_OTFABm2xdf",
-      "reason": "“是什么让一首诗浑然一体”建立在“押韵与歌曲中的节奏”之上"
+      "reason": "“是什么让一首诗连成一体”建立在“儿歌与歌曲中的节奏”之上"
     },
     {
       "topicId": "mt_TffvIu6VgG",
       "prerequisiteId": "mt_YNe6siFTFq",
-      "reason": "“诗歌写作”支持“是什么让一首诗浑然一体”"
+      "reason": "“写诗”支持“是什么让一首诗连成一体”"
     },
     {
       "topicId": "mt_TfOiog-ALs",
@@ -15946,7 +15946,7 @@
     {
       "topicId": "mt_THl9GLxwoL",
       "prerequisiteId": "mt_xmmgAzxe5j",
-      "reason": "两位数的通用位值，扩展自对十几的组成的理解（如 13 = 10 + 3）"
+      "reason": "两位数的一般位值，扩展自对十几这一组成的理解"
     },
     {
       "topicId": "mt_thsY1ZesaU",
@@ -16026,12 +16026,12 @@
     {
       "topicId": "mt_tlfSqLFm_Y",
       "prerequisiteId": "mt_AghN5YcCHX",
-      "reason": "“天气预报”支持“数据如何形成解释”"
+      "reason": "“天气预报”支持“数据如何构建解释”"
     },
     {
       "topicId": "mt_tlfSqLFm_Y",
       "prerequisiteId": "mt_CVywzrjT_c",
-      "reason": "“数据如何形成解释”建立在“用证据回答问题”之上"
+      "reason": "“数据如何构建解释”建立在“用证据回答问题”之上"
     },
     {
       "topicId": "mt_TlGhXAqC4p",
@@ -16136,7 +16136,7 @@
     {
       "topicId": "mt_TqDq6jyOmL",
       "prerequisiteId": "mt_doX1BhmFgk",
-      "reason": "按百分位上下数数属于熟练度训练，并不是写出 45/100 = 0.45 的必要条件：把百分位看作一个量，来自通用的 a/b 含义（ndGq，硬前置）和按位置确定数字的值（aPBz，硬前置）"
+      "reason": "以百分位为单位上下计数属于熟练度训练，并不是写出 45/100 = 0.45 的必要条件：把百分位看作一个量，来自通用的 a/b 含义（ndGq，硬前置）和按位置确定数字的值（aPBz，硬前置）"
     },
     {
       "topicId": "mt_TqDq6jyOmL",
@@ -16351,7 +16351,7 @@
     {
       "topicId": "mt_u5HkSxZECM",
       "prerequisiteId": "mt_c29FaCTNsx",
-      "reason": "在描述数据如何记录和呈现时使用“计数符号”“频数”“象形图”等词汇，需要先读过并画过简单的象形图和计数表"
+      "reason": "在描述数据如何记录和呈现时使用“划记符号”“频数”“象形图”等词汇，需要先读过并画过简单的象形图和正字统计表"
     },
     {
       "topicId": "mt_u6SYiVx7FX",
