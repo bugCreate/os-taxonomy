@@ -88,8 +88,8 @@
       "sha256": "55cd9e4bf01643eca9d8ead79e86d554e0cc29e92b62c8a0a089fc4bb3d9afac"
     },
     "i18n/zh-Hans/teaching-research.json": {
-      "bytes": 9689556,
-      "sha256": "8d5879cbc6306349a9e197951604990088e5ebb3397ecaa5198afe3cb32e6124"
+      "bytes": 10313017,
+      "sha256": "01265fe7063441cae6c11b820e569039dd19c148190b75c922bfc78f61c2b42b"
     },
     "i18n/zh-Hans/labels.json": {
       "bytes": 8239,
@@ -100,8 +100,8 @@
       "sha256": "1848e41ec5d79c46c4d5a40e158f17a775395965ad9c4b3134611dcb7e8c0c22"
     },
     "i18n/zh-Hans/manifest.json": {
-      "bytes": 1161,
-      "sha256": "ebe1802d253afb564c5cbac6cfcb771fe4f3474d024d5f1953097bc00101dd4e"
+      "bytes": 1162,
+      "sha256": "a54b4767fbc8b1fcba0b16f498f2e1d63514aa41a4aeb585cf02fcd497f911c0"
     }
   },
   "excluded": [
@@ -191,8 +191,8 @@
         "topics": 1912,
         "clusters": 177,
         "dependencies": 4002,
-        "teachingResearch": 463,
-        "teachingResearchPending": 634
+        "teachingResearch": 491,
+        "teachingResearchPending": 606
       },
       "manifest": "i18n/zh-Hans/manifest.json"
     }
