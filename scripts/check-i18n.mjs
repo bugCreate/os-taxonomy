@@ -31,6 +31,8 @@ function codeTokensStrict(text) {
     // A curriculum code carries an upper-case run (4-PS4-1, AC9TDE2P04, KS1);
     // a lower-case hyphenated phrase (5-minute, 3000-year) is prose.
     if (!/[A-Z]/.test(token)) continue;
+    // A tier label (Tier-2) is a level name the glossary translates, not a code.
+    if (/^tier-\d/i.test(token)) continue;
     tokens.add(token);
   }
   return [...tokens];
