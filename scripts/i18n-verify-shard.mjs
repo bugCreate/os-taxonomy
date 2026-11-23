@@ -10,30 +10,10 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { IDENTIFIER_KEYS, hasCJK } from './i18n-lib.mjs';
+import { IDENTIFIER_KEYS, codeTokens, hasCJK, isMarkerOnly } from './i18n-lib.mjs';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const load = path => JSON.parse(readFileSync(resolve(ROOT, path), 'utf8'));
-
-const CODE = /\b(?=[A-Za-z0-9-]*[A-Za-z])(?=[A-Za-z0-9-]*\d)[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*\b/g;
-const ORDINAL = /^\d+(?:st|nd|rd|th)$/i;
-
-function codeTokens(text) {
-  if (typeof text !== 'string') return [];
-  const tokens = new Set();
-  for (const match of text.matchAll(CODE)) {
-    const token = match[0];
-    if (ORDINAL.test(token)) continue;
-    if ((token.match(/[A-Za-z]/g) ?? []).length < 2) continue;
-    // A curriculum code carries an upper-case run (4-PS4-1, AC9TDE2P04, KS1);
-    // a lower-case hyphenated phrase (5-minute, 3000-year) is prose.
-    if (!/[A-Z]/.test(token)) continue;
-    // A tier label (Tier-2) is a level name the glossary translates, not a code.
-    if (/^tier-\d/i.test(token)) continue;
-    tokens.add(token);
-  }
-  return [...tokens];
-}
 
 /** Compare one source row with its translation, field by field. */
 export function verifyRow(source, translation, path, errors) {
@@ -46,7 +26,7 @@ export function verifyRow(source, translation, path, errors) {
       errors.push(`${path}: empty translation`);
       return;
     }
-    if (!hasCJK(translation)) {
+    if (!hasCJK(translation) && !isMarkerOnly(source)) {
       errors.push(`${path}: no Chinese characters`);
       return;
     }

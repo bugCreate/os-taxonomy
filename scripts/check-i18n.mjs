@@ -10,33 +10,13 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   clusterKey,
+  codeTokens,
   dependencyKey,
   hasCJK,
+  isMarkerOnly,
   projectResearchText,
   textPairs,
 } from './i18n-lib.mjs';
-
-// A curriculum code mixes letters and digits: 4-PS4-1, AC9TDE2P04.
-// Ordinals (1st, 2nd) are prose, not codes, and are translated as prose.
-const CODE = /\b(?=[A-Za-z0-9-]*[A-Za-z])(?=[A-Za-z0-9-]*\d)[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*\b/g;
-const ORDINAL = /^\d+(?:st|nd|rd|th)$/i;
-
-function codeTokensStrict(text) {
-  if (typeof text !== 'string') return [];
-  const tokens = new Set();
-  for (const match of text.matchAll(CODE)) {
-    const token = match[0];
-    if (ORDINAL.test(token)) continue;
-    if ((token.match(/[A-Za-z]/g) ?? []).length < 2) continue;
-    // A curriculum code carries an upper-case run (4-PS4-1, AC9TDE2P04, KS1);
-    // a lower-case hyphenated phrase (5-minute, 3000-year) is prose.
-    if (!/[A-Z]/.test(token)) continue;
-    // A tier label (Tier-2) is a level name the glossary translates, not a code.
-    if (/^tier-\d/i.test(token)) continue;
-    tokens.add(token);
-  }
-  return [...tokens];
-}
 
 /** Chinese copy should be Chinese. Quoted English is normal — English-language
  *  topics quote English examples on purpose — so the check looks at the text
@@ -86,11 +66,13 @@ function checkTextPair(errors, label, english, chinese, { allowNull = false, ide
     return;
   }
   if (allowNull) return;
-  if (!hasCJK(chinese)) {
+  // A string that is only standards labels, codes and omitted-wording markers
+  // has nothing to translate; it is copied as it stands.
+  if (!hasCJK(chinese) && !isMarkerOnly(english)) {
     errors.push(`${label}: translation has no Chinese characters`);
     return;
   }
-  for (const token of codeTokensStrict(english)) {
+  for (const token of codeTokens(english)) {
     if (!chinese.includes(token)) {
       errors.push(`${label}: lost code ${token}`);
     }

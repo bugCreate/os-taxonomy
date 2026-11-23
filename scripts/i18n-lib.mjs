@@ -38,13 +38,54 @@ export const IDENTIFIER_KEYS = new Set([
  *  A token qualifies when it mixes letters and digits (4-PS4-1, AC9TDE2P04,
  *  ON-MATH-2020-G1-C3.1) — plain words never qualify, so the check stays
  *  specific to the codes and levels the English text cites. */
+const CODE = /\b(?=[A-Za-z0-9-]*[A-Za-z])(?=[A-Za-z0-9-]*\d)[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*\b/g;
+const ORDINAL = /^\d+(?:st|nd|rd|th)$/i;
+
+/** Is this token a curriculum code, or prose that merely contains a number?
+ *
+ *  Codes are shaped like codes: they start with a digit (2-PS1-1, 3D), carry
+ *  an upper-case run (AC9TDE2P04, KS1) or start with a short letter run
+ *  (Ma6, P2, H2O). Prose that only looks code-ish is translated like prose:
+ *  "5-minute", "Grade-5", "Within-20", "PreK-12", "Tier-2". */
+export function isCodeToken(token) {
+  if (!/[A-Z]/.test(token)) return false;
+  // A tier label (Tier-2) is a level name the glossary translates.
+  if (/^tier-\d/i.test(token)) return false;
+  if (/^[0-9]/.test(token)) return true;
+  if (/[A-Z]{2,}/.test(token)) return true;
+  const lead = (token.match(/^[A-Za-z]+/) ?? [''])[0];
+  return lead.length <= 3;
+}
+
+/** The codes a translation has to preserve. */
 export function codeTokens(text) {
   if (typeof text !== 'string') return [];
   const tokens = new Set();
-  for (const match of text.matchAll(/\b(?=[A-Za-z0-9-]*[A-Za-z])(?=[A-Za-z0-9-]*\d)[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*\b/g)) {
-    tokens.add(match[0]);
+  for (const match of text.matchAll(CODE)) {
+    const token = match[0];
+    if (ORDINAL.test(token)) continue;
+    if ((token.match(/[A-Za-z]/g) ?? []).length < 2) continue;
+    if (!isCodeToken(token)) continue;
+    tokens.add(token);
   }
   return [...tokens];
+}
+
+/** The marker the English source uses when a curriculum wording is not
+ *  reproduced. The glossary keeps it verbatim, so it survives translation. */
+export const OMITTED_MARKER = /\[curriculum wording omitted; reference [^\]]+\]/;
+
+/** A string that is nothing but standards labels, codes and omitted-wording
+ *  markers ("NGSS 2-PS1-1 '[curriculum wording omitted; reference 2-PS1-1]'")
+ *  has no prose to translate. Such a string is copied as it stands, so it
+ *  cannot be required to contain Chinese characters. */
+export function isMarkerOnly(text) {
+  if (typeof text !== 'string') return false;
+  if (!OMITTED_MARKER.test(text)) return false;
+  const rest = text.replace(new RegExp(OMITTED_MARKER, 'g'), ' ');
+  // Any run of lower-case letters is prose that must be translated.
+  if (/[a-z]{3,}/.test(rest)) return false;
+  return true;
 }
 
 export function hasCJK(text) {
