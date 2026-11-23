@@ -4,13 +4,13 @@
   "direction": "ltr",
   "version": "v1",
   "sourceTaxonomyVersion": "v1",
-  "generatedAt": "2026-11-23T12:26:41.478Z",
+  "generatedAt": "2026-11-23T12:31:37.646Z",
   "counts": {
     "topics": 1912,
     "clusters": 177,
     "dependencies": 4002,
-    "teachingResearch": 803,
-    "teachingResearchPending": 294
+    "teachingResearch": 806,
+    "teachingResearchPending": 291
   },
   "files": {
     "topics.json": {
@@ -26,8 +26,8 @@
       "sha256": "55cd9e4bf01643eca9d8ead79e86d554e0cc29e92b62c8a0a089fc4bb3d9afac"
     },
     "teaching-research.json": {
-      "bytes": 17072101,
-      "sha256": "6e381458902b5c050dacc9c198350ec3217a072f64a894012161cf3cd355f4b6"
+      "bytes": 17135301,
+      "sha256": "e7211519b4f214eaf97451092bb24f45b900f86f16fbe900c606ade09e149b06"
     },
     "labels.json": {
       "bytes": 8239,
