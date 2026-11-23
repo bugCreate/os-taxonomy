@@ -45,17 +45,28 @@ const ORDINAL = /^\d+(?:st|nd|rd|th)$/i;
  *
  *  Codes are shaped like codes: they start with a digit (2-PS1-1, 3D), carry
  *  an upper-case run (AC9TDE2P04, KS1) or start with a short letter run
- *  (Ma6, P2, H2O). Prose that only looks code-ish is translated like prose:
- *  "5-minute", "Grade-5", "Within-20", "PreK-12", "Tier-2". */
+ *  (Ma6, P2, H2O). Every hyphen-separated part of a code is itself code-shaped
+ *  (ON-K-2026-K-B11), so "3D-unsuitable" and "KS3-placement" are prose and get
+ *  translated. Other prose that only looks code-ish — "5-minute", "Grade-5",
+ *  "Within-20", "PreK-12", "Tier-2" — is translated too. */
 export function isCodeToken(token) {
   if (!/[A-Z]/.test(token)) return false;
   // A tier label (Tier-2) is a level name the glossary translates.
   if (/^tier-\d/i.test(token)) return false;
+  const segments = token.split('-');
+  if (segments.length > 1 && !segments.every(isCodeSegment)) return false;
   if (/^[0-9]/.test(token)) return true;
   if (/[A-Z]{2,}/.test(token)) return true;
   const lead = (token.match(/^[A-Za-z]+/) ?? [''])[0];
   return lead.length <= 3;
 }
+
+/** One hyphen-separated part of a code: "PS1", "2026", "ON", "Ma6". */
+function isCodeSegment(segment) {
+  if (/^[A-Z0-9]+$/.test(segment)) return true;
+  return /^[A-Za-z]{1,3}\d+$/.test(segment);
+}
+
 
 /** The codes a translation has to preserve. */
 export function codeTokens(text) {
@@ -75,18 +86,22 @@ export function codeTokens(text) {
  *  reproduced. The glossary keeps it verbatim, so it survives translation. */
 export const OMITTED_MARKER = /\[curriculum wording omitted; reference [^\]]+\]/;
 
-/** A string that is nothing but standards labels, codes and omitted-wording
- *  markers ("NGSS 2-PS1-1 '[curriculum wording omitted; reference 2-PS1-1]'")
- *  has no prose to translate. Such a string is copied as it stands, so it
- *  cannot be required to contain Chinese characters. */
-export function isMarkerOnly(text) {
+/** Does this string carry any prose at all?
+ *
+ *  A worked answer ("(a) P = 2(5 + 3) = 2 × 8 = 16 cm.") or a list of codes
+ *  ("2-PS1-1, 4-PS4-1") has nothing to translate, so it is copied as it stands
+ *  and cannot be required to contain Chinese characters. A string that holds
+ *  an English word of three or more lower-case letters does have prose, and
+ *  that prose must be translated. */
+export function hasNoProse(text) {
   if (typeof text !== 'string') return false;
-  if (!OMITTED_MARKER.test(text)) return false;
   const rest = text.replace(new RegExp(OMITTED_MARKER, 'g'), ' ');
-  // Any run of lower-case letters is prose that must be translated.
   if (/[a-z]{3,}/.test(rest)) return false;
-  return true;
+  if (/\d/.test(rest)) return true;
+  const words = rest.match(/[A-Za-z][A-Za-z0-9]*/g) ?? [];
+  return words.length > 0 && words.every(word => isCodeToken(word));
 }
+
 
 export function hasCJK(text) {
   return typeof text === 'string' && CJK.test(text);

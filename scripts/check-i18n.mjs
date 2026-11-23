@@ -13,7 +13,7 @@ import {
   codeTokens,
   dependencyKey,
   hasCJK,
-  isMarkerOnly,
+  hasNoProse,
   projectResearchText,
   textPairs,
 } from './i18n-lib.mjs';
@@ -66,9 +66,9 @@ function checkTextPair(errors, label, english, chinese, { allowNull = false, ide
     return;
   }
   if (allowNull) return;
-  // A string that is only standards labels, codes and omitted-wording markers
-  // has nothing to translate; it is copied as it stands.
-  if (!hasCJK(chinese) && !isMarkerOnly(english)) {
+  // A string that holds only codes, formulas and omitted-wording markers has
+  // no prose to translate; it is copied as it stands.
+  if (!hasCJK(chinese) && !hasNoProse(english)) {
     errors.push(`${label}: translation has no Chinese characters`);
     return;
   }

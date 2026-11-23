@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { checkLocalePack } from './check-i18n.mjs';
-import { normalizeChineseQuotes, normalizeQuotesDeep, restoreResearchRecord } from './i18n-lib.mjs';
+import { codeTokens, hasNoProse, normalizeChineseQuotes, normalizeQuotesDeep, restoreResearchRecord } from './i18n-lib.mjs';
 import { verifyShard } from './i18n-verify-shard.mjs';
 import { mergeLocaleData } from './build-locale.mjs';
 
@@ -256,6 +256,35 @@ test('the normaliser leaves identifiers alone', () => {
   const normalized = normalizeQuotesDeep({ id: 'mt_"x"', name: '"引号"' });
   assert.equal(normalized.id, 'mt_"x"');
   assert.equal(normalized.name, '“引号”');
+});
+
+test('a curriculum code is recognised by its shape, not by its digits', () => {
+  assert.deepEqual(
+    codeTokens('2-PS1-1, AC9TDE2P04, Ma6, KS1, H2O, ON-K-2026-K-B11').sort(),
+    ['2-PS1-1', 'AC9TDE2P04', 'H2O', 'KS1', 'Ma6', 'ON-K-2026-K-B11'],
+  );
+  assert.deepEqual(
+    codeTokens('Within-20, Grade-5, PreK-12, 3D-unsuitable, KS3-placement, 5-minute, Tier-2'),
+    [],
+  );
+});
+
+test('a string with no prose is copied as it stands', () => {
+  assert.equal(hasNoProse('(a) P = 2(5 + 3) = 2 × 8 = 16 cm.'), true);
+  assert.equal(hasNoProse("NGSS 2-PS1-1 '[curriculum wording omitted; reference 2-PS1-1]'"), true);
+  assert.equal(hasNoProse('The child explains the answer.'), false);
+});
+
+test('a worked answer with no prose passes the check', () => {
+  const formula = '(a) P = 2(5 + 3) = 2 × 8 = 16 cm.';
+  const english = structuredClone(englishRecord);
+  english.assess.correctAnswer = formula;
+  const translated = structuredClone(translatedRecord);
+  translated.assess.correctAnswer = formula;
+  const localPack = pack();
+  localPack['teaching-research.json'].records = [restoreResearchRecord(english, translated)];
+  const localContext = { ...context, research: { records: [english] } };
+  assert.deepEqual(checkLocalePack('zh-Hans', localPack, localContext), []);
 });
 
 test('the build publishes localized text beside the English original', () => {

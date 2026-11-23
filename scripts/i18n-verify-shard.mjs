@@ -10,7 +10,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { IDENTIFIER_KEYS, codeTokens, hasCJK, isMarkerOnly } from './i18n-lib.mjs';
+import { IDENTIFIER_KEYS, codeTokens, hasCJK, hasNoProse } from './i18n-lib.mjs';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const load = path => JSON.parse(readFileSync(resolve(ROOT, path), 'utf8'));
@@ -26,7 +26,7 @@ export function verifyRow(source, translation, path, errors) {
       errors.push(`${path}: empty translation`);
       return;
     }
-    if (!hasCJK(translation) && !isMarkerOnly(source)) {
+    if (!hasCJK(translation) && !hasNoProse(source)) {
       errors.push(`${path}: no Chinese characters`);
       return;
     }
