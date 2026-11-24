@@ -109,7 +109,7 @@ The taxonomy ships in English. A **locale pack** adds a language without touchin
 
 Join a translation to its source by id — `topic.id`, `topicId`, `prerequisiteId`, or `(subject, domain, ageRangeStart)` for a domain summary. `npm run i18n:build zh-Hans` publishes `dist/zh-Hans/` for applications, with the English original kept beside every translated field.
 
-The teaching-research layer declares its own coverage, the same way the English research export declares its gaps: `data/i18n/zh-Hans/teaching-research.json` carries a `coverage` block with `topicCount`, `withTranslation` and `pendingTopicIds`, and a research record may be absent only when the pack declares it as pending. Topics, domain summaries and prerequisite reasons are complete; the research records are translated as the run proceeds, and the pack always states its exact gap.
+The teaching-research layer declares its own coverage, the same way the English research export declares its gaps: `data/i18n/zh-Hans/teaching-research.json` carries a `coverage` block with `topicCount`, `withTranslation` and `pendingTopicIds`, and a research record may be absent only when the pack declares it as pending. Topics, domain summaries and prerequisite reasons are complete, and the Chinese pack translates all 1,097 research records, so its declared gap is empty; the pack always states its exact coverage.
 
 See [docs/i18n.md](docs/i18n.md) for the design, [docs/i18n.zh-Hans.md](docs/i18n.zh-Hans.md) for the 中文说明 and [docs/i18n/glossary.zh-Hans.md](docs/i18n/glossary.zh-Hans.md) for the 术语表. Curriculum standard text is **not** translated: it stays in `data/curriculum-standards.json` under its upstream licence, and only codes enter the graph.
 
