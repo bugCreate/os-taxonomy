@@ -103,8 +103,10 @@
           "type": "array",
           "items": {
             "type": "object",
-            "required": ["topicId", "pedagogy", "learn", "assess", "sources", "confidence"],
+            "required": ["schemaVersion", "namespace", "topicId", "pedagogy", "learn", "assess", "sources", "confidence", "authorship"],
             "properties": {
+              "schemaVersion": { "type": "integer", "minimum": 2 },
+              "namespace": { "type": "string", "minLength": 1 },
               "topicId": { "type": "string", "pattern": "^mt_" },
               "pedagogy": {
                 "type": "object",
@@ -119,21 +121,23 @@
               },
               "learn": {
                 "type": "object",
-                "required": ["summary", "activities", "constraints", "reviewNotes"],
+                "required": ["schemaVersion", "summary", "activities", "constraints", "reviewNotes"],
                 "properties": {
+                  "schemaVersion": { "type": "integer", "minimum": 2 },
                   "summary": { "type": "string" },
                   "activities": {
                     "type": "array",
                     "items": {
                       "type": "object",
-                      "required": ["title", "learnerActions", "intendedInsight", "feedback", "rationale", "sourceClaims"],
+                      "required": ["title", "learnerActions", "intendedInsight", "feedback", "rationale"],
                       "properties": {
+                        "id": { "type": "string", "pattern": "^activity_" },
                         "title": { "type": "string" },
                         "learnerActions": { "type": "array", "items": { "type": "string" } },
                         "intendedInsight": { "type": "string" },
                         "feedback": { "type": "array", "items": { "type": "string" } },
                         "rationale": { "type": "string" },
-                        "sourceClaims": { "type": "array", "items": { "type": "string" } }
+                        "sourceIds": { "type": "array", "items": { "type": "string", "pattern": "^citation_" } }
                       },
                       "additionalProperties": false
                     }
@@ -159,6 +163,7 @@
                           "type": "object",
                           "required": ["pattern", "kind", "revealedBy", "nextMove", "distractor", "reteachPrerequisiteId"],
                           "properties": {
+                            "id": { "type": "string", "pattern": "^diagnostic_" },
                             "pattern": { "type": "string" },
                             "kind": { "type": "string" },
                             "revealedBy": { "type": "string" },
@@ -193,6 +198,7 @@
                   "type": "object",
                   "required": ["claim", "source", "url", "verified"],
                   "properties": {
+                    "id": { "type": "string", "pattern": "^citation_" },
                     "claim": { "type": "string" },
                     "source": { "type": "string" },
                     "url": { "type": "string" },
@@ -202,8 +208,7 @@
                 }
               },
               "confidence": { "type": "string" },
-              "provenance": { "type": "object" },
-              "publicationNotes": { "type": "object" }
+              "authorship": { "type": "object" }
             },
             "additionalProperties": false
           }

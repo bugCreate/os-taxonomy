@@ -62,6 +62,8 @@ const englishResearch = {
   recordCount: 1,
   notes: ['An English note.'],
   records: [{
+    schemaVersion: 2,
+    namespace: 'v1',
     topicId: 'mt_TEST1',
     pedagogy: {
       summary: 'Build sentences from a subject and a verb.',
@@ -73,12 +75,13 @@ const englishResearch = {
       schemaVersion: 2,
       summary: 'Children build sentences.',
       activities: [{
+        id: 'activity_1',
         title: 'Build it',
         learnerActions: ['Pick a subject card'],
         intendedInsight: 'A sentence needs a subject and a verb.',
         feedback: ['Good.'],
         rationale: 'Combining parts makes the structure visible.',
-        sourceClaims: ['A claim'],
+        sourceIds: ['citation_1'],
       }],
       constraints: ['Do not use formal grammar terms.'],
       reviewNotes: ['Check the order.'],
@@ -88,15 +91,14 @@ const englishResearch = {
       diagnosticPrompt: 'Why is "The dog" not a sentence?',
       correctAnswer: 'It has no verb.',
       whatMakesItDiscriminate: 'Only a subject is present.',
-      errorPatterns: [{ pattern: 'It is too short.', kind: 'misconception', revealedBy: 'Counts words.', nextMove: 'Ask for a verb.', distractor: null, reteachPrerequisiteId: null }],
+      errorPatterns: [{ id: 'diagnostic_1', pattern: 'It is too short.', kind: 'misconception', revealedBy: 'Counts words.', nextMove: 'Ask for a verb.', distractor: null, reteachPrerequisiteId: null }],
       probeDeeper: ['What would make it a sentence?'],
       responseLevels: { gap: 'It is short.', partial: 'It needs a verb.', full: 'A sentence has a subject and a verb.' },
       poeTask: null,
     },
-    sources: [{ claim: 'A claim', source: 'Eureka Math 2018', url: 'https://example.org/eureka', verified: true }],
+    sources: [{ id: 'citation_1', claim: 'A claim', source: 'Eureka Math 2018', url: 'https://example.org/eureka', verified: true }],
     confidence: 'high',
-    provenance: { originalResearchGeneratedBy: 'agent', createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z' },
-    publicationNotes: { omittedCurriculumText: [] },
+    authorship: { attribution: 'os-taxonomy research team' },
   }],
 };
 
@@ -281,7 +283,7 @@ test('the merge, the validator and the build agree on a locale pack', () => {
     assert.equal(built['teaching-research.json'].records[0].learn.activities[0].title, '搭句子');
     assert.equal(built['teaching-research.json'].records[0].learn.activities[0].titleEn, 'Build it');
     assert.equal(built['teaching-research.json'].records[0].sources[0].url, 'https://example.org/eureka');
-    assert.deepEqual(built['teaching-research.json'].records[0].learn.activities[0].sourceClaims, ['一条主张']);
+    assert.deepEqual(built['teaching-research.json'].records[0].learn.activities[0].sourceIds, ['citation_1']);
     assert.ok(root);
   } finally {
     rmSync(root, { recursive: true, force: true });

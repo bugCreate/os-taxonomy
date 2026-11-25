@@ -107,6 +107,19 @@ export function hasCJK(text) {
   return typeof text === 'string' && CJK.test(text);
 }
 
+/** Does this English string still hold prose a translator has to render?
+ *
+ *  A curriculum marker ("[curriculum wording omitted; reference 4-PS4-1]"), a
+ *  worked answer ("(a) P = 2(5 + 3) = 16 cm.") or a list of codes has nothing
+ *  to translate: it is copied as it stands. Every other string that carries an
+ *  English word needs a Chinese sentence. */
+export function needsTranslation(text) {
+  if (typeof text !== 'string') return false;
+  if (OMITTED_MARKER.test(text)) return false;
+  if (hasNoProse(text)) return false;
+  return /[a-z]{3,}/.test(text);
+}
+
 /** Chinese typography: a straight double quote that quotes Chinese text
  *  becomes a full-width “ or ”. A straight quote inside a code sample
  *  (`print("hello")`) or inside an English marker such as
@@ -200,21 +213,16 @@ export function projectResearchText(record) {
 }
 
 /** Rebuild a full research record from the English source and its translation.
- *  `sourceClaims` are not translated twice: each English claim string is
- *  matched back to the source it quotes, and the translated claim is reused,
- *  so the two lists cannot drift apart. */
+ *
+ *  The English record is the single source of truth for every identifier: the
+ *  record id, the namespace, the activity and citation ids, the source ids a
+ *  lesson points at, the assessment method, the error kinds and the source
+ *  names are copied over untouched. Only prose comes from the translation, so
+ *  a locale file can never invent an id, a method or a curriculum source. */
 export function restoreResearchRecord(source, translation) {
-  const claimIndex = new Map();
-  source.sources.forEach((entry, index) => {
-    if (!claimIndex.has(entry.claim)) claimIndex.set(entry.claim, index);
-  });
-  const translatedClaims = translation.sources.map(entry => entry.claim);
-  const claimOf = english => {
-    const index = claimIndex.get(english);
-    if (index === undefined) throw new Error(`research ${source.topicId}: unmapped source claim`);
-    return translatedClaims[index];
-  };
   return {
+    schemaVersion: source.schemaVersion,
+    namespace: source.namespace,
     topicId: source.topicId,
     pedagogy: {
       summary: translation.pedagogy.summary,
@@ -226,12 +234,13 @@ export function restoreResearchRecord(source, translation) {
       schemaVersion: source.learn.schemaVersion,
       summary: translation.learn.summary,
       activities: source.learn.activities.map((activity, index) => ({
+        ...(activity.id === undefined ? {} : { id: activity.id }),
         title: translation.learn.activities[index].title,
         learnerActions: [...translation.learn.activities[index].learnerActions],
         intendedInsight: translation.learn.activities[index].intendedInsight,
         feedback: [...translation.learn.activities[index].feedback],
         rationale: translation.learn.activities[index].rationale,
-        sourceClaims: activity.sourceClaims.map(claimOf),
+        ...(activity.sourceIds === undefined ? {} : { sourceIds: [...activity.sourceIds] }),
       })),
       constraints: [...translation.learn.constraints],
       reviewNotes: [...translation.learn.reviewNotes],
@@ -242,6 +251,7 @@ export function restoreResearchRecord(source, translation) {
       correctAnswer: translation.assess.correctAnswer,
       whatMakesItDiscriminate: translation.assess.whatMakesItDiscriminate,
       errorPatterns: source.assess.errorPatterns.map((pattern, index) => ({
+        ...(pattern.id === undefined ? {} : { id: pattern.id }),
         pattern: translation.assess.errorPatterns[index].pattern,
         kind: pattern.kind,
         revealedBy: translation.assess.errorPatterns[index].revealedBy,
@@ -254,14 +264,14 @@ export function restoreResearchRecord(source, translation) {
       poeTask: translation.assess.poeTask,
     },
     sources: source.sources.map((entry, index) => ({
-      claim: translatedClaims[index],
+      ...(entry.id === undefined ? {} : { id: entry.id }),
+      claim: translation.sources[index].claim,
       source: entry.source,
       url: entry.url,
       verified: entry.verified,
     })),
     confidence: source.confidence,
-    provenance: { ...source.provenance },
-    publicationNotes: { ...source.publicationNotes },
+    ...(source.authorship === undefined ? {} : { authorship: { ...source.authorship } }),
   };
 }
 

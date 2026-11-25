@@ -31,6 +31,8 @@ const englishClusters = { clusters: [{ subject: 'English', domain: 'Grammar & Pu
 const englishDependencies = { dependencies: [{ topicId: 'mt_BBB', prerequisiteId: 'mt_AAA', strength: 'hard', reason: 'Must understand vibrations make sound before finding volume patterns' }] };
 
 const englishRecord = {
+  schemaVersion: 2,
+  namespace: 'v1',
   topicId: 'mt_BBB',
   pedagogy: {
     summary: 'A **Tier A** topic.',
@@ -42,12 +44,13 @@ const englishRecord = {
     schemaVersion: 2,
     summary: 'Children compare stars.',
     activities: [{
+      id: 'activity_1',
       title: 'Sort the stars',
       learnerActions: ['Rank the cards'],
       intendedInsight: 'Closer means brighter.',
       feedback: ['Good — you compared distance first.'],
       rationale: 'Apparent brightness follows from distance.',
-      sourceClaims: ['A claim'],
+      sourceIds: ['citation_1'],
     }],
     constraints: ['Do not use the word luminosity.'],
     reviewNotes: ['Check the sequence.'],
@@ -57,15 +60,14 @@ const englishRecord = {
     diagnosticPrompt: 'Why does one star look brighter?',
     correctAnswer: 'It is closer.',
     whatMakesItDiscriminate: 'Distance is the only variable.',
-    errorPatterns: [{ pattern: 'It is a bigger star.', kind: 'misconception', revealedBy: 'Points at size.', nextMove: 'Ask about distance.', distractor: null, reteachPrerequisiteId: null }],
+    errorPatterns: [{ id: 'diagnostic_1', pattern: 'It is a bigger star.', kind: 'misconception', revealedBy: 'Points at size.', nextMove: 'Ask about distance.', distractor: null, reteachPrerequisiteId: null }],
     probeDeeper: ['What if both were equally far?'],
     responseLevels: { gap: 'It is bigger.', partial: 'Distance matters.', full: 'Closer stars look brighter.' },
     poeTask: null,
   },
-  sources: [{ claim: 'A claim', source: 'Eureka Math 2018', url: 'https://example.org/eureka', verified: true }],
+  sources: [{ id: 'citation_1', claim: 'A claim', source: 'Eureka Math 2018', url: 'https://example.org/eureka', verified: true }],
   confidence: 'high',
-  provenance: { originalResearchGeneratedBy: 'agent', createdAt: '2026-01-01T00:00:00.000Z', updatedAt: '2026-01-01T00:00:00.000Z' },
-  publicationNotes: { omittedCurriculumText: [{ path: 'pedagogy.summary', codes: ['NGSS-K5:4-PS4-1'] }] },
+  authorship: { attribution: 'os-taxonomy research team' },
 };
 
 const translatedRecord = {
@@ -221,14 +223,33 @@ test('a changed identifier in the research record is reported', () => {
   assert.ok(errors.some(error => error.includes('error kind changed')));
 });
 
-test('the merge restores identifiers and derives source claims', () => {
+test('the merge restores identifiers and keeps the source ids', () => {
   const restored = restoreResearchRecord(englishRecord, translatedRecord);
+  assert.equal(restored.schemaVersion, 2);
+  assert.equal(restored.namespace, 'v1');
+  assert.equal(restored.authorship.attribution, 'os-taxonomy research team');
   assert.equal(restored.assess.method, 'two_tier');
+  assert.equal(restored.assess.errorPatterns[0].id, 'diagnostic_1');
   assert.equal(restored.assess.errorPatterns[0].kind, 'misconception');
+  assert.equal(restored.sources[0].id, 'citation_1');
   assert.equal(restored.sources[0].url, 'https://example.org/eureka');
   assert.equal(restored.sources[0].claim, '一条主张');
-  assert.deepEqual(restored.learn.activities[0].sourceClaims, ['一条主张']);
-  assert.equal(restored.publicationNotes.omittedCurriculumText[0].codes[0], 'NGSS-K5:4-PS4-1');
+  assert.equal(restored.learn.activities[0].id, 'activity_1');
+  assert.deepEqual(restored.learn.activities[0].sourceIds, ['citation_1']);
+});
+
+test('a changed identifier in the v2 record is reported', () => {
+  const broken = pack();
+  broken['teaching-research.json'].records[0].learn.activities[0].sourceIds = ['citation_9'];
+  const errors = checkLocalePack('zh-Hans', broken, context);
+  assert.ok(errors.some(error => error.includes('activity source ids changed')));
+});
+
+test('a changed namespace in the v2 record is reported', () => {
+  const broken = pack();
+  broken['teaching-research.json'].records[0].namespace = 'v2';
+  const errors = checkLocalePack('zh-Hans', broken, context);
+  assert.ok(errors.some(error => error.includes('record namespace changed')));
 });
 
 test('the shard verifier catches a changed identifier', () => {

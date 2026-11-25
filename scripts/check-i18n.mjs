@@ -241,6 +241,24 @@ export function checkLocalePack(locale, pack, context) {
       const sourceText = projectResearchText(source);
       const translatedText = projectResearchText(row);
       const allowEnglish = ENGLISH_SUBJECTS.has(subjectByTopic.get(source.topicId));
+      // Record level identifiers belong to the English record: a locale pack
+      // may translate prose, never ids, namespaces or attribution.
+      check(row.schemaVersion === source.schemaVersion, `research ${row.topicId}: record schema version changed`);
+      check(row.namespace === source.namespace, `research ${row.topicId}: record namespace changed`);
+      check(
+        JSON.stringify(row.authorship ?? null) === JSON.stringify(source.authorship ?? null),
+        `research ${row.topicId}: authorship changed`,
+      );
+      check(row.learn.schemaVersion === source.learn.schemaVersion, `research ${row.topicId}: learn schema version changed`);
+      source.learn.activities.forEach((activity, index) => {
+        const translated = row.learn.activities?.[index];
+        if (!translated) return;
+        check(translated.id === activity.id, `research ${row.topicId}: activity id changed`);
+        check(
+          JSON.stringify(translated.sourceIds ?? null) === JSON.stringify(activity.sourceIds ?? null),
+          `research ${row.topicId}: activity source ids changed`,
+        );
+      });
       checkTree(errors, `research ${row.topicId}.pedagogy`, sourceText.pedagogy, translatedText.pedagogy, { allowEnglish });
       checkTree(errors, `research ${row.topicId}.learn`, sourceText.learn, translatedText.learn, { allowEnglish });
       if (source.assess === null) {
@@ -251,6 +269,7 @@ export function checkLocalePack(locale, pack, context) {
         source.assess.errorPatterns.forEach((pattern, index) => {
           const translated = row.assess.errorPatterns?.[index];
           if (!translated) return;
+          check(translated.id === pattern.id, `research ${row.topicId}: error pattern id changed`);
           check(translated.kind === pattern.kind, `research ${row.topicId}: error kind changed`);
           check(translated.reteachPrerequisiteId === pattern.reteachPrerequisiteId, `research ${row.topicId}: reteach prerequisite changed`);
         });
@@ -258,6 +277,7 @@ export function checkLocalePack(locale, pack, context) {
       source.sources.forEach((entry, index) => {
         const translated = row.sources?.[index];
         if (!translated) return;
+        check(translated.id === entry.id, `research ${row.topicId}: source id changed`);
         check(translated.source === entry.source, `research ${row.topicId}: source name changed`);
         check(translated.url === entry.url, `research ${row.topicId}: source url changed`);
         check(translated.verified === entry.verified, `research ${row.topicId}: source verification flag changed`);
